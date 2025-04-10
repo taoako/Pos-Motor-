@@ -94,7 +94,7 @@
             for (let i = 1; i <= 4; i++) {
                 pinValue += document.getElementById('pin' + i).value;
             }
-            document.getElementById('pin').value = pinValue;
+            document.getElementById('pin').value = pinValue; 
         }
     </script>
 </body>
