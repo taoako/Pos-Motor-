@@ -29,11 +29,11 @@ class Transaction extends Model
 
     public function transactionDetails()
     {
-        return $this->hasMany(TransactionDetail::class);
+        return $this->hasMany(Transaction_Detail::class);
     }
 
     public function transactionLogs()
     {
-        return $this->hasMany(TransactionLog::class);
+        return $this->hasMany(Transaction_Log::class);
     }
 }

@@ -2,22 +2,27 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable
-
-
 {
-    use Notifiable;
+    use HasFactory;
 
     protected $fillable = [
         'employee_id',
         'username',
         'password',
     ];
+
+    protected $hidden = ['password'];
+
+    public function setPasswordAttribute($value)
+    {
+        // Only hash if it's not already hashed
+        $this->attributes['password'] = Hash::needsRehash($value) ? Hash::make($value) : $value;
+    }
 
     public function employee()
     {

@@ -31,11 +31,11 @@ class Product extends Model
 
     public function transactionLogs()
     {
-        return $this->hasMany(TransactionLog::class);
+        return $this->hasMany(Transaction_Log::class);
     }
 
     public function stockInDetails()
     {
-        return $this->hasMany(StockInDetail::class);
+        return $this->hasMany(Stock_In_Details::class);
     }
 }
