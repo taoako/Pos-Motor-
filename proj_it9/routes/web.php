@@ -8,5 +8,5 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::middleware('auth')->get('/dashboard', function () {
-    return "Welcome to POS Dashboard";
+    return view('dashboard');
 })->name('dashboard');
