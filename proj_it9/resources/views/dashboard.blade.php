@@ -1,5 +1,8 @@
 <html lang="en">
 
+
+
+
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1" name="viewport" />
@@ -106,9 +109,13 @@
                             </button>
                         </form>
                         <a
-                            href="{{ route('register') }}"
+                            href="#"
                             class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                            role="menuitem">Register Another User</a>
+                            role="menuitem"
+                            data-bs-toggle="modal"
+                            data-bs-target="#registerModal">
+                            Register Another User
+                        </a>
                     </div>
                 </div>
             </header>
@@ -139,4 +146,7 @@
     </script>
 </body>
 
+
 </html>
+
+@include('auth.register') <!-- or the correct path to your modal -->

@@ -6,6 +6,7 @@ use App\Http\Controllers\StockController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\InventoryController;
 use Illuminate\Http\Request;
+use App\Http\Controllers\RegisterController;
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
@@ -38,7 +39,12 @@ Route::middleware('auth')->get('/profile/settings', function () {
     return view('profile.settings'); // Create a `profile/settings.blade.php` view
 })->name('profile.settings');
 
-// Register route
-Route::middleware('auth')->get('/register', function () {
-    return view('auth.register'); // Create an `auth/register.blade.php` view
+Route::get('/register', function () {
+    return view('auth.register');
 })->name('register');
+
+Route::post('/employee/store', [App\Http\Controllers\EmployeeController::class, 'store'])->name('employee.store');
+Route::post('/user/store', [App\Http\Controllers\UserController::class, 'store'])->name('user.store');
+
+
+Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
