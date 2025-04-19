@@ -1,4 +1,3 @@
-<!-- resources/views/stock_in_details/index.blade.php -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,7 +26,7 @@
                     <tr>
                         <td>{{ $detail->id }}</td>
                         <td>{{ $detail->stock_in_transaction_id }}</td>
-                        <td>{{ $detail->product->name }}</td> <!-- Assuming there's a product relation -->
+                        <td>{{ $detail->product->name }}</td>
                         <td>{{ $detail->quantity }}</td>
                         <td>{{ $detail->cost_price }}</td>
                         <td>{{ $detail->total_cost }}</td>
@@ -36,7 +35,10 @@
             </tbody>
         </table>
 
-        <a href="{{ route('stock-in-details.create') }}" class="btn btn-primary">Add New Stock-In Detail</a>
+        <!-- Button to navigate back to the Dashboard -->
+        <a href="{{ route('dashboard') }}" class="btn btn-secondary mt-3">Back to Dashboard</a>
+
+        <a href="{{ route('stock-in-details.create') }}" class="btn btn-primary mt-3">Add New Stock-In Detail</a>
     </div>
 </body>
 </html>

@@ -27,11 +27,12 @@
             border-radius: 15px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
             overflow: hidden;
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .card:hover {
             transform: translateY(-10px); /* Slight lift effect */
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3); /* Enhanced shadow effect */
         }
 
         .card-header {
@@ -47,6 +48,13 @@
             font-size: 2.5rem;
             font-weight: 600;
             text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: fadeIn 0.6s ease-out; /* Card header fade-in animation */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .form-label {
@@ -67,6 +75,7 @@
             border-color: #4e73df;
             box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
             background-color: #555;
+            transform: scale(1.05); /* Scale effect on focus */
         }
 
         .form-control {
@@ -105,6 +114,7 @@
             border-radius: 10px;
             margin-bottom: 20px;
             text-align: center;
+            animation: fadeIn 1s ease-out;
         }
 
         .alert-danger {
@@ -114,6 +124,7 @@
             border-radius: 10px;
             margin-bottom: 20px;
             text-align: center;
+            animation: fadeIn 1s ease-out;
         }
 
         .mb-3 {
