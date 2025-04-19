@@ -7,49 +7,49 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background: linear-gradient(to right, #1f4037, #99f2c8); /* Gradient background */
+            background: linear-gradient(135deg, #1D2B64, #F8C4D8); /* Purple-blue gradient background */
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             margin: 0;
+            color: #ffffff;
         }
 
         .container {
             max-width: 900px;
-            padding: 40px;
+            padding: 50px;
         }
 
         .card {
-            background-color: #222222;
-            color: #ffffff;
-            border-radius: 15px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
+            background-color: #2C3E50; /* Deep blue-gray */
+            color: #ecf0f1; /* Off white */
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .card:hover {
-            transform: translateY(-10px); /* Slight lift effect */
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3); /* Enhanced shadow effect */
+            transform: translateY(-15px); /* More pronounced lift */
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4); /* Enhanced shadow */
         }
 
         .card-header {
-            background-color: #4e73df;
+            background-color: #8E44AD; /* Purple color */
             color: #fff;
             text-align: center;
             padding: 25px;
-            border-radius: 15px 15px 0 0;
+            border-radius: 20px 20px 0 0;
         }
 
         .card-header h1 {
             margin: 0;
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 2px;
-            animation: fadeIn 0.6s ease-out; /* Card header fade-in animation */
+            animation: fadeIn 0.6s ease-out;
         }
 
         @keyframes fadeIn {
@@ -63,29 +63,29 @@
         }
 
         .form-select, .form-control {
-            border-radius: 10px;
+            border-radius: 12px;
             border: 1px solid #d1d3e2;
-            background-color: #444;
-            color: #fff;
+            background-color: #34495E; /* Dark gray with blue undertones */
+            color: #ecf0f1;
             box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
             transition: all 0.3s ease;
         }
 
         .form-select:focus, .form-control:focus {
-            border-color: #4e73df;
-            box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
-            background-color: #555;
-            transform: scale(1.05); /* Scale effect on focus */
+            border-color: #8E44AD;
+            box-shadow: 0 0 0 0.2rem rgba(142, 68, 173, 0.25); /* Purple glow on focus */
+            background-color: #5D6D7E; /* Lighter dark gray */
+            transform: scale(1.05); /* Subtle scale effect */
         }
 
         .form-control {
             padding: 15px;
-            font-size: 1rem;
+            font-size: 1.1rem;
         }
 
         button {
-            background-color: #4e73df;
-            border-color: #4e73df;
+            background-color: #8E44AD; /* Purple */
+            border-color: #8E44AD;
             padding: 15px 25px;
             border-radius: 50px;
             font-size: 1.2rem;
@@ -98,30 +98,31 @@
         }
 
         button:hover {
-            background-color: #2e59d9;
-            border-color: #2e59d9;
+            background-color: #9B59B6; /* Lighter purple */
+            border-color: #9B59B6;
             transform: scale(1.1); /* Button grow effect */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25); /* Enhanced shadow */
         }
 
         button:active {
-            transform: scale(1); /* Restore to normal size when clicked */
+            transform: scale(1); /* Restore size on click */
         }
 
         .alert-success {
-            background-color: #28a745;
+            background-color: #27AE60; /* Green success */
             color: white;
             padding: 15px;
-            border-radius: 10px;
+            border-radius: 12px;
             margin-bottom: 20px;
             text-align: center;
             animation: fadeIn 1s ease-out;
         }
 
         .alert-danger {
-            background-color: #dc3545;
+            background-color: #E74C3C; /* Red error */
             color: white;
             padding: 15px;
-            border-radius: 10px;
+            border-radius: 12px;
             margin-bottom: 20px;
             text-align: center;
             animation: fadeIn 1s ease-out;

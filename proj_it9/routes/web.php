@@ -32,6 +32,23 @@ Route::middleware('auth')->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
+// 👉 Dynamic content routes for sidebar fetch
+Route::middleware('auth')->get('/dashboard/content', function () {
+    return view('partials.dashboard-content');
+})->name('dashboard.content');
+
+Route::middleware('auth')->get('/stock-in/content', function () {
+    return view('partials.stock-in-content');
+})->name('stock-in.content');
+
+Route::middleware('auth')->get('/sales/content', function () {
+    return view('partials.sales-content');
+})->name('sales.content');
+
+Route::middleware('auth')->get('/inventory/content', function () {
+    return view('partials.inventory-content');
+})->name('inventory.content');
+
 // Search Route
 Route::middleware('auth')->get('/search', function (Request $request) {
     $query = $request->query('query');
