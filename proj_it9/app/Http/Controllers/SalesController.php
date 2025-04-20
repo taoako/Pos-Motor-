@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Sale; // Assuming you have a Sale model to handle sales data
 use Illuminate\Http\Request;
 
 class SalesController extends Controller
 {
-    /**
-     * Display the sales page.
-     *
-     * @return \Illuminate\View\View
-     */
+    // Show sales page with data
     public function index()
     {
-        return view('sales'); // Ensure you create a `sales.blade.php` view file
+        $sales = Sale::all(); // Fetch all sales records from the database
+        return view('sales.index', compact('sales'));
     }
 }
