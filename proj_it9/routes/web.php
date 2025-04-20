@@ -20,7 +20,13 @@ Route::middleware('auth')->get('/sales', [SalesController::class, 'index'])->nam
 // Inventory route
 Route::middleware('auth')->get('/inventory', [InventoryController::class, 'index'])->name('inventory');
 
-Route::middleware('auth')->get('/stock-in', [StockController::class, 'index'])->name('stock-in');
+
+
+use App\Http\Controllers\StockInController;
+
+Route::get('/stock-in', [StockInController::class, 'index'])->name('stock-in');
+Route::post('/stock-in/store', [StockInController::class, 'store'])->name('stock-in.store');
+
 
 Route::middleware('auth')->get('/dashboard', function () {
     return view('dashboard');

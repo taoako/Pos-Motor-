@@ -41,10 +41,15 @@
                 <a
                     href="{{ route('dashboard') }}"
                     class="flex items-center space-x-2 bg-gray-500 rounded-full py-2 px-4 text-black text-xs"> <i class="fas fa-th-large"></i> <span>Dashboard</span> </a>
-                <a
-                    href="{{ route('stock-in') }}"
-                    class="flex items-center space-x-2 bg-gray-600 rounded-full py-2 px-4 text-white text-xs"> <i class="fas fa-shopping-cart"></i> <span>Stock In</span> </a>
-                <a
+                <button
+
+                    onclick="loadPage('{{ route('stock-in') }}')"
+                    class="flex items-center space-x-2 bg-gray-600 rounded-full py-2 px-4 text-white text-xs w-full text-left">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Stock In</span>
+                </button>
+
+                <a href="{{ route('sales') }}"
                     href="{{ route('sales') }}"
                     class="flex items-center space-x-2 bg-gray-500 rounded-full py-2 px-4 text-black text-xs"> <i class="fas fa-percent"></i> <span>Sales</span> </a>
                 <a
@@ -53,7 +58,7 @@
             </nav>
         </aside>
         <!-- Main content -->
-        <main class="flex-1 bg-gray-200 relative">
+        <main id="main-content" class="flex-1 bg-gray-200 relative">
             <!-- Top bar -->
             <header
                 class="bg-gray-600 flex items-center justify-end space-x-4 px-4 py-2 relative">
@@ -144,6 +149,21 @@
             }
         });
     </script>
+
+    <script>
+        function loadPage(url) {
+            fetch(url)
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('main-content').innerHTML = html;
+                })
+                .catch(error => {
+                    document.getElementById('main-content').innerHTML = '<p class="text-red-600 p-4">Error loading content.</p>';
+                    console.error('Error loading page:', error);
+                });
+        }
+    </script>
+
 </body>
 
 

@@ -21,10 +21,6 @@ class StockInTransaction extends Model
         return $this->belongsTo(Supplier::class);
     }
 
-    public function transactionLogs()
-    {
-        return $this->hasMany(TransactionLog::class);
-    }
     public function stockInDetails()
     {
         return $this->hasMany(StockInDetail::class);
