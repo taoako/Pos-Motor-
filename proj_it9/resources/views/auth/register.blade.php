@@ -14,11 +14,21 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #f2f2f2;
+            background-color: rgba(153, 155, 174, 0.7);
         }
 
         .card {
             background-color: #e0e0e0;
+        }
+
+        /* Ensure text color is black for modal content */
+        .modal-content {
+            color: black;
+        }
+
+        .modal-header,
+        .modal-footer {
+            color: white;
         }
     </style>
 </head>
@@ -28,8 +38,6 @@
         <div class="text-center mb-4">
             <h2 class="fw-bold">Employee & User Registration</h2>
         </div>
-
-
 
         <!-- Registration Modal -->
         <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">

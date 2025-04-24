@@ -7,6 +7,8 @@ use App\Http\Controllers\SalesController;
 use App\Http\Controllers\InventoryController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\UserController;
 
 // Authentication Routes
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -21,11 +23,7 @@ Route::middleware('auth')->get('/inventory', [InventoryController::class, 'index
 
 // Stock-In Routes
 Route::middleware('auth')->get('/stock-in', [StockController::class, 'index'])->name('stock-in');
-
-// Stock-In Details Create Route (GET)
 Route::middleware('auth')->get('/stock-in-details/create', [StockController::class, 'create'])->name('stock-in-details.create');
-
-// Stock-In Details Store Route (POST)
 Route::middleware('auth')->post('/stock-in-details', [StockController::class, 'store'])->name('stock-in-details.store');
 
 // Dashboard Route
@@ -33,7 +31,7 @@ Route::middleware('auth')->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
-// 👉 Dynamic content routes for sidebar fetch
+// Dynamic Content Routes
 Route::middleware('auth')->get('/dashboard/content', function () {
     return view('partials.dashboard-content');
 })->name('dashboard.content');
@@ -53,7 +51,7 @@ Route::middleware('auth')->get('/inventory/content', function () {
 // Search Route
 Route::middleware('auth')->get('/search', function (Request $request) {
     $query = $request->query('query');
-    return view('search.results', compact('query'));  // Use a view for displaying search results
+    return view('search.results', compact('query')); // Use a view for displaying search results
 })->name('search');
 
 // Profile Settings Route
@@ -61,24 +59,18 @@ Route::middleware('auth')->get('/profile/settings', function () {
     return view('profile.settings'); // Profile settings page
 })->name('profile.settings');
 
-<<<<<<< HEAD
-Route::get('/register', function () {
-    return view('auth.register');
-})->name('register');
-
-Route::post('/employee/store', [App\Http\Controllers\EmployeeController::class, 'store'])->name('employee.store');
-Route::post('/user/store', [App\Http\Controllers\UserController::class, 'store'])->name('user.store');
-
-
-Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
-=======
-// Register Route (ensure only accessible to admin)
+// Register Routes
 Route::middleware('auth')->get('/register', function () {
     return view('auth.register'); // Register a new user
 })->name('register');
 
-// Optional: If you want a fallback route for 404 errors
+Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
+
+// Employee and User Store Routes
+Route::post('/employee/store', [EmployeeController::class, 'store'])->name('employee.store');
+Route::post('/user/store', [UserController::class, 'store'])->name('user.store');
+
+// Fallback Route for 404 Errors
 Route::fallback(function () {
     return response()->view('errors.404', [], 404);
 });
->>>>>>> d88676f421918fffddda745cef256c84e7aa1e2e

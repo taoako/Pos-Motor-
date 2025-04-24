@@ -1,12 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<<<<<<< HEAD
 
-
-
-
-=======
->>>>>>> d88676f421918fffddda745cef256c84e7aa1e2e
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1" name="viewport" />
@@ -16,27 +10,51 @@
 
     <style>
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes slideInLeft {
-            from { opacity: 0; transform: translateX(-30px); }
-            to { opacity: 1; transform: translateX(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .fade-in { animation: fadeInUp 0.6s ease-out; }
-        .slide-in { animation: slideInLeft 0.5s ease-out; }
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .slide-in {
+            animation: slideInLeft 0.5s ease-out;
+        }
+
         .btn-hover {
             transition: all 0.3s ease-in-out;
         }
+
         .btn-hover:hover {
             transform: scale(1.1);
             background-color: #4CAF50;
             box-shadow: 0 0 10px rgba(76, 175, 80, 0.6);
         }
+
         .nav-link {
             transition: transform 0.3s ease, background-color 0.3s ease;
         }
+
         .nav-link:hover {
             transform: translateX(5px) scale(1.05);
         }
@@ -84,35 +102,6 @@
                     <button class="bg-orange-600 rounded-full p-2 btn-hover">
                         <i class="fas fa-user text-white text-sm"></i>
                     </button>
-<<<<<<< HEAD
-                    <div
-                        id="dropdownMenu"
-                        class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-50"
-                        role="menu"
-                        aria-orientation="vertical"
-                        aria-labelledby="dropdownButton">
-                        <a
-                            href="{{ route('profile.settings') }}"
-                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                            role="menuitem">Profile Settings</a>
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button
-                                type="submit"
-                                class="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                role="menuitem">
-                                Log Out
-                            </button>
-                        </form>
-                        <a
-                            href="#"
-                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                            role="menuitem"
-                            data-bs-toggle="modal"
-                            data-bs-target="#registerModal">
-                            Register Another User
-                        </a>
-=======
                     <div class="relative">
                         <button id="dropdownButton" class="text-white text-xl">
                             <i class="fas fa-cogs"></i>
@@ -123,9 +112,10 @@
                                 @csrf
                                 <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">Log Out</button>
                             </form>
-                            <a href="{{ route('register') }}" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">Register Another User</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700" data-bs-toggle="modal" data-bs-target="#registerModal">
+                                Register Another User
+                            </a>
                         </div>
->>>>>>> d88676f421918fffddda745cef256c84e7aa1e2e
                     </div>
                 </div>
             </header>
@@ -169,13 +159,9 @@
             }
         });
     </script>
+
+
+    @include('auth.register')
 </body>
-<<<<<<< HEAD
-
 
 </html>
-
-@include('auth.register') <!-- or the correct path to your modal -->
-=======
-</html>
->>>>>>> d88676f421918fffddda745cef256c84e7aa1e2e
