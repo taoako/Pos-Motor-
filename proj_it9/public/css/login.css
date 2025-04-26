@@ -1,0 +1,279 @@
+/* Set the background image for the entire page */
+body {
+    background-image: url('../images/lambo.jpeg'); /* Replace with your desired image path */
+    background-size: cover; /* Ensure the image covers the entire page */
+    background-position: center; /* Center the image */
+    background-attachment: fixed; /* Keep the background fixed during scrolling */
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    animation: fadeIn 1.5s ease-in-out; /* Background fade-in animation */
+}
+
+/* Fade-in animation for the body */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Style the login container */
+.login-container {
+    display: flex;
+    background-image: url('../images/lambo.jpeg'); /* Relative path to the image */
+    background-size: cover; /* Ensure the image covers the container */
+    background-position: center; /* Center the image */
+    padding: 20px;
+    border-radius: 12px;
+    width: 700px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    align-items: center;
+    justify-content: space-between;
+    animation: slideIn 1s ease-out; /* Slide-in animation for the container */
+}
+
+/* Slide-in animation for the login container */
+@keyframes slideIn {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Style the login image */
+.login-image {
+    flex: 1;
+    padding-right: 20px;
+    animation: zoomIn 1s ease-in; /* Zoom-in animation for the image */
+}
+
+.login-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    animation: fadeInImage 1.5s ease-in-out; /* Fade-in animation for the image */
+}
+
+/* Fade-in animation for the login image */
+@keyframes fadeInImage {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Style the login form */
+.login-form {
+    flex: 1;
+    text-align: left;
+    animation: fadeInForm 1.2s ease-in-out; /* Fade-in animation for the form */
+}
+
+/* Fade-in animation for the login form */
+@keyframes fadeInForm {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Style the headings */
+h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #333;
+    font-family: 'Orbitron', sans-serif;
+    animation: fadeInHeading 1.5s ease-in-out; /* Fade-in animation for headings */
+}
+
+/* Fade-in animation for headings */
+@keyframes fadeInHeading {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+p {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 20px;
+    animation: fadeInText 1.5s ease-in-out; /* Fade-in animation for text */
+}
+
+/* Fade-in animation for text */
+@keyframes fadeInText {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Style the input fields */
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: #f9f9f9;
+    animation: fadeInInput 1.5s ease-in-out; /* Fade-in animation for inputs */
+}
+
+/* Fade-in animation for input fields */
+@keyframes fadeInInput {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Style the error message */
+.error {
+    color: red;
+    font-size: 12px;
+    margin-top: -10px;
+    margin-bottom: 10px;
+    text-align: left;
+    animation: fadeInError 1.5s ease-in-out; /* Fade-in animation for errors */
+}
+
+/* Fade-in animation for error messages */
+@keyframes fadeInError {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Style the login button */
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #4CAF50; /* Button color */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    animation: fadeInButton 1.5s ease-in-out; /* Fade-in animation for the button */
+}
+
+/* Fade-in animation for the button */
+@keyframes fadeInButton {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+button:hover {
+    background-color: #45a049;
+    transform: scale(1.05); /* Slight zoom effect on hover */
+}
+
+/* Style the forgot password link */
+.forgot {
+    display: block;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #007BFF;
+    text-decoration: none;
+    animation: fadeInLink 1.5s ease-in-out; /* Fade-in animation for the link */
+}
+
+/* Fade-in animation for the forgot password link */
+@keyframes fadeInLink {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.forgot:hover {
+    text-decoration: underline;
+}
+
+/* Style the form footer */
+.form-footer {
+    margin-top: 20px;
+    text-align: center;
+    animation: fadeInFooter 1.5s ease-in-out; /* Fade-in animation for the footer */
+}
+
+/* Fade-in animation for the footer */
+@keyframes fadeInFooter {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Extra link styling */
+.extra-link {
+    text-align: center;
+    margin-top: 15px;
+    animation: fadeInExtraLink 1.5s ease-in-out; /* Fade-in animation for extra links */
+}
+
+/* Fade-in animation for extra links */
+@keyframes fadeInExtraLink {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.extra-link a {
+    color: #333;
+    text-decoration: none;
+}
+
+.extra-link a:hover {
+    text-decoration: underline;
+}

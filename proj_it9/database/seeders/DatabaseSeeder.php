@@ -3,21 +3,28 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Employee;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // 1. Create the employee that user will link to
+        $employee = Employee::create([
+            'first_name' => 'Admin',
+            'last_name' => 'User',
+            'position' => 'Administrator',
+            // Add any other required fields here
+        ]);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        // 2. Create the admin user and link to that employee
+        User::create([
+            'employee_id' => $employee->id,
+            'username' => 'ADMIN',
+            'password' => 'PASSWORD123', // Auto-hashed
+            'role' => 'free',
+            'is_active' => true,
         ]);
     }
 }

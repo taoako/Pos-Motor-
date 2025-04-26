@@ -19,9 +19,6 @@ return new class extends Migration
             $table->string('phone')->unique()->nullable();
             $table->string('address')->nullable();
             $table->string('position')->nullable(); // e.g., Manager, Sales, etc.
-
-
-
             $table->timestamps();
         });
     }
@@ -31,6 +28,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('emmployees');
+        // Corrected table name
+        Schema::dropIfExists('employees');
     }
 };

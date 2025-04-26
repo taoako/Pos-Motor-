@@ -1,0 +1,255 @@
+/* General body styling */
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #121212; /* Deep black background */
+    color: #ffffff; /* White text */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    animation: fadeIn 1.5s ease-in-out; /* Fade-in animation for the body */
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Sidebar styling */
+aside {
+    background-color: #1f1f1f; /* Dark gray for sidebar */
+    color: #ffffff; /* White text */
+    width: 250px;
+    min-height: 100vh;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: slideInLeft 1s ease-in-out; /* Slide-in animation for the sidebar */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Shadow for sidebar */
+}
+
+/* Slide-in animation for the sidebar */
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Sidebar buttons */
+aside button {
+    background-color: #e63946; /* Vibrant red for buttons */
+    color: #ffffff; /* White text */
+    padding: 10px 20px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 8px;
+    width: 100%;
+    text-align: left;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    animation: fadeInButton 1.2s ease-in-out; /* Fade-in animation for buttons */
+}
+
+aside button:hover {
+    background-color: #f75c5c; /* Lighter red hover effect */
+    transform: scale(1.05);
+}
+
+/* Fade-in animation for buttons */
+@keyframes fadeInButton {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Navigation links */
+.nav-link {
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.nav-link:hover {
+    transform: translateX(5px) scale(1.05);
+}
+
+/* Main content styling */
+main {
+    flex: 1;
+    background-color: #121212; /* Deep black background */
+    padding: 20px;
+    animation: fadeInMain 1.5s ease-in-out; /* Fade-in animation for the main content */
+}
+
+/* Fade-in animation for main content */
+@keyframes fadeInMain {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Header styling */
+header {
+    background-color: #1f1f1f; /* Dark gray for header */
+    color: #ffffff; /* White text */
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    animation: slideDown 1s ease-out; /* Slide-down animation for the header */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Shadow for header */
+}
+
+/* Slide-down animation for the header */
+@keyframes slideDown {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Search bar styling */
+header form {
+    display: flex;
+    align-items: center;
+    background-color: #e63946; /* Vibrant red for search bar */
+    border-radius: 8px;
+    padding: 5px 10px;
+    animation: fadeInSearch 1.5s ease-in-out; /* Fade-in animation for search bar */
+}
+
+header form input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #ffffff; /* White text */
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+header form button {
+    background-color: #f75c5c; /* Lighter red button */
+    border: none;
+    border-radius: 8px;
+    padding: 5px 10px;
+    color: #ffffff; /* White text */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+header form button:hover {
+    background-color: #ff7b7b; /* Even lighter red hover effect */
+}
+
+/* Fade-in animation for search bar */
+@keyframes fadeInSearch {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Dropdown menu styling */
+#dropdownMenu {
+    background-color: #1f1f1f; /* Dark gray for dropdown */
+    color: #ffffff; /* White text */
+    border-radius: 8px;
+    overflow: hidden;
+    animation: fadeInDropdown 0.5s ease-in-out; /* Fade-in animation for dropdown */
+}
+
+/* Fade-in animation for dropdown */
+@keyframes fadeInDropdown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Dynamic content area */
+#main-content {
+    background-color: #1f1f1f; /* Dark gray background for content */
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Shadow for content */
+    animation: fadeInContent 1.5s ease-in-out; /* Fade-in animation for content */
+}
+
+/* Fade-in animation for content */
+@keyframes fadeInContent {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Footer styling */
+footer {
+    background-color: #1f1f1f; /* Dark gray for footer */
+    color: #ffffff; /* White text */
+    text-align: center;
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 20px;
+    animation: fadeInFooter 1.5s ease-in-out; /* Fade-in animation for the footer */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Shadow for footer */
+}
+
+/* Fade-in animation for the footer */
+@keyframes fadeInFooter {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Hover effects for buttons */
+.btn-hover {
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-hover:hover {
+    transform: scale(1.1);
+    background-color: #f75c5c; /* Lighter red hover effect */
+    box-shadow: 0 0 10px rgba(247, 92, 92, 0.6);
+}
