@@ -23,8 +23,16 @@ class AuthController extends Controller
 
         // Attempt to authenticate the user
         if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
-            // Authentication passed, redirect to the dashboard
-            return redirect()->route('dashboard');
+            // Check if the authenticated user is an admin
+            $user = Auth::user();
+            if ($user->employee && $user->employee->position === 'Admin') {
+                // Redirect to the dashboard if the user is an admin
+                return redirect()->route('dashboard');
+            }
+
+            // Log out the user if they are not an admin
+            Auth::logout();
+            return back()->withErrors(['username' => 'Access denied. Only Admins can log in.']);
         }
 
         // Authentication failed, redirect back with an error

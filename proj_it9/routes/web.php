@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProfileController;
 
 // Authentication Routes
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -54,11 +55,10 @@ Route::middleware('auth')->get('/search', function (Request $request) {
     return view('search.results', compact('query')); // Use a view for displaying search results
 })->name('search');
 
-// Profile Settings Route
-Route::middleware('auth')->get('/profile/settings', function () {
-    return view('profile.settings'); // Profile settings page
-})->name('profile.settings');
 
+
+
+Route::middleware('auth')->put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 // Register Routes
 Route::middleware('auth')->get('/register', function () {
     return view('auth.register'); // Register a new user

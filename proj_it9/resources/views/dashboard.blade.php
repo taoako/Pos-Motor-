@@ -107,7 +107,9 @@
                             <i class="fas fa-cogs"></i>
                         </button>
                         <div id="dropdownMenu" class="hidden absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg z-50">
-                            <a href="{{ route('profile.settings') }}" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">Profile Settings</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700" data-bs-toggle="modal" data-bs-target="#profileModal">
+                                Profile Settings
+                            </a>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">Log Out</button>
@@ -161,7 +163,17 @@
     </script>
 
 
+    @if (session('success'))
+    <div class="alert alert-success alert-dismissible fade show mt-2" role="alert">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
+
     @include('auth.register')
+
+    @include('auth.profile')
+
 </body>
 
 </html>
