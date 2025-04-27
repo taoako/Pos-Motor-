@@ -97,6 +97,9 @@ Route::post('/register', [RegisterController::class, 'store'])->name('register.s
 Route::post('/employee/store', [EmployeeController::class, 'store'])->name('employee.store');
 Route::post('/user/store', [UserController::class, 'store'])->name('user.store');
 
+// Route for creating a free user account (inserted code)
+Route::get('/create-free-account', [UserController::class, 'createFreeAccount'])->name('create.free.account');
+
 // =========================
 // Fallback Route for 404 Errors
 // =========================

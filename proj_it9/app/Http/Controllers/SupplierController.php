@@ -14,7 +14,7 @@ class SupplierController extends Controller
      */
     public function create()
     {
-        return view('supplier.create'); // Create a Blade file for the supplier form
+        return view('supplier.create'); // Return the Blade view for adding a supplier
     }
 
     /**
@@ -27,19 +27,21 @@ class SupplierController extends Controller
     {
         // Validate the incoming request data
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:suppliers,email',
-            'phone' => 'required|string|max:15',
+            'supplier_name' => 'required|string|max:255',
+            'email' => 'nullable|email|unique:suppliers,email|max:255',
+            'phone' => 'nullable|string|max:15',
+            'address' => 'nullable|string|max:500',
         ]);
 
         // Create a new supplier
         Supplier::create([
-            'name' => $request->name,
+            'supplier_name' => $request->supplier_name,
             'email' => $request->email,
             'phone' => $request->phone,
+            'address' => $request->address,
         ]);
 
-        // Redirect back to the dashboard with a success message
-        return redirect()->route('dashboard')->with('success', 'Supplier added successfully!');
+        // Redirect back to the supplier creation form with a success message
+        return redirect()->route('supplier.add')->with('success', 'Supplier added successfully!');
     }
 }

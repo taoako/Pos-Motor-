@@ -1,27 +1,33 @@
-<?php
+<?PHP
 
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+use App\Models\Employee;
 
 class UserController extends Controller
 {
-    public function store(Request $request)
+    // This method will create a free account for testing purposes
+    public function createFreeAccount()
     {
-        $request->validate([
-            'employee_id' => 'required|exists:employees,id',
-            'username' => 'required|unique:users,username',
-            'password' => 'required|min:6',
+        // Check if there's at least one employee in the database
+        $employee = Employee::first();
+
+        if (!$employee) {
+            // If no employee exists, create a dummy employee
+            $employee = Employee::create([
+                'name' => 'Test Employee',  // Modify this to suit your needs
+            ]);
+        }
+
+        // Create a new free account user and link it to the employee
+        $user = User::createFreeAccount([
+            'employee_id' => $employee->id,  // Link the user to the employee
+            'username'    => 'freeuser123',   // Username for the user
+            'password'    => 'password123',   // Password (it will be hashed automatically)
         ]);
 
-        User::create([
-            'employee_id' => $request->employee_id,
-            'username' => $request->username,
-            'password' => Hash::make($request->password),
-        ]);
-
-        return redirect()->route('register')->with('success', 'User successfully registered!');
+        // Return a response or redirect
+        return response()->json($user);  // For testing purposes, you can return the user data
     }
 }
