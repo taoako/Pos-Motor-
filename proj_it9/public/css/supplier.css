@@ -1,0 +1,146 @@
+/* General body styling */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(to right, #4facfe, #00f2fe); /* Cool blue gradient */
+    animation: fadeIn 1.5s ease-in; /* Fade-in animation for the body */
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+/* Container styling */
+.container {
+    margin: 50px auto;
+    padding: 30px;
+    background: url('../images/ulok.jpeg') no-repeat center center; /* Add ulok.jpeg as background */
+    background-size: cover; /* Ensure the image covers the entire container */
+    border-radius: 20px; /* Rounded corners */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+    animation: slideUp 1s ease-out; /* Slide-up animation for the container */
+    max-width: 600px; /* Center the container and limit its width */
+    position: relative;
+    overflow: hidden; /* Hide overflow for animations */
+    color: #ffffff; /* White text for contrast */
+}
+
+/* Add a semi-transparent overlay for better text readability */
+.container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6); /* Black overlay with 60% opacity */
+    z-index: 1;
+    border-radius: 20px; /* Match the container's rounded corners */
+}
+
+/* Ensure all text inside the container is above the overlay */
+.container > * {
+    position: relative;
+    z-index: 2;
+}
+
+/* Header styling */
+h2 {
+    font-weight: 600;
+    color: #ffffff; /* White text for the header */
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 1.8rem; /* Smaller header size */
+    animation: fadeIn 1s ease-in; /* Fade-in animation for the header */
+    letter-spacing: 1px; /* Add spacing between letters */
+    position: relative;
+}
+
+/* Header underline animation */
+h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    width: 0;
+    height: 3px;
+    background: #00f2fe; /* Cool blue underline */
+    transition: width 0.5s ease, left 0.5s ease;
+}
+
+h2:hover::after {
+    width: 100%;
+    left: 0;
+}
+
+/* Form input styling */
+.form-control {
+    border-radius: 10px; /* Rounded corners for inputs */
+    border: 1px solid #ccc;
+    padding: 12px;
+    transition: all 0.3s ease; /* Smooth transition for focus effects */
+    animation: fadeIn 1.2s ease-in-out; /* Fade-in animation for inputs */
+    background: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+    color: #333333; /* Dark gray text */
+}
+
+.form-control:focus {
+    border-color: #4facfe; /* Cool blue border on focus */
+    box-shadow: 0 0 8px #4facfe; /* Glow effect on focus */
+}
+
+/* Save button styling */
+.btn-save {
+    background: #4facfe; /* Cool blue background for the button */
+    border: none;
+    color: white;
+    font-weight: 600;
+    padding: 12px 30px;
+    border-radius: 10px;
+    margin-top: 20px;
+    transition: background 0.3s ease, transform 0.2s, box-shadow 0.3s ease; /* Smooth hover effects */
+    display: block;
+    width: 100%;
+    animation: slideUp 1.2s ease-out; /* Slide-up animation for the button */
+}
+
+.btn-save:hover {
+    background: #00c6ff; /* Lighter blue on hover */
+    transform: translateY(-5px); /* Lift effect */
+    box-shadow: 0 8px 15px rgba(0, 198, 255, 0.3); /* Shadow on hover */
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+        margin: 20px auto;
+    }
+
+    h2 {
+        font-size: 1.5rem; /* Smaller header size for mobile */
+    }
+
+    .btn-save {
+        padding: 10px 20px;
+    }
+}

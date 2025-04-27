@@ -12,17 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->id();
-            $table->string('product_name')->unique();
-            $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
-            $table->foreignId('supplier_id')->constrained('suppliers')->onDelete('cascade');
-            $table->string('sku')->unique()->nullable();
-            $table->string('barcode')->unique()->nullable();
-            $table->string('unit')->nullable(); // e.g., kg, pcs, etc.
-            $table->decimal('cost_price', 10, 2)->nullable(); // Cost price of the product
+            $table->id(); // Primary key
+            $table->string('product_name')->unique(); // Product name should be unique
+            $table->foreignId('category_id')->constrained('categories')->onDelete('cascade'); // Foreign key to categories
+            $table->foreignId('supplier_id')->constrained('suppliers')->onDelete('cascade'); // Foreign key to suppliers
+            $table->string('sku')->unique()->nullable(); // SKU can be nullable
+            $table->string('barcode')->unique()->nullable(); // Barcode can be nullable
+            $table->string('unit')->nullable(); // Unit of the product (kg, pcs, etc.)
+            $table->decimal('cost_price', 10, 2)->nullable(); // Nullable cost price field
 
-
-            $table->timestamps();
+            $table->timestamps(); // Created at and updated at fields
         });
     }
 

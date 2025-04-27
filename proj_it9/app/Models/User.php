@@ -14,21 +14,50 @@ class User extends Authenticatable
         'employee_id',
         'username',
         'password',
+        'role',
+        'is_active',
     ];
 
-    protected $hidden = ['password'];
+    protected $hidden = [
+        'password',
+    ];
 
+    /**
+     * Automatically hash the password when it's set.
+     */
     public function setPasswordAttribute($value)
     {
-        // Only hash if it's not already hashed
-        $this->attributes['password'] = Hash::needsRehash($value) ? Hash::make($value) : $value;
+        if (!empty($value)) {
+            // Hash only if it's not already hashed
+            if (!preg_match('/^\$2y\$/', $value)) {
+                $value = Hash::make($value);
+            }
+            $this->attributes['password'] = $value;
+        }
     }
 
+    /**
+     * Create a new free user account with default role and status.
+     */
+    public static function createFreeAccount($data)
+    {
+        $data['role'] = 'free';       // Default role
+        $data['is_active'] = true;    // Default account status
+
+        return self::create($data);
+    }
+
+    /**
+     * Relationship to employee (belongs to).
+     */
     public function employee()
     {
         return $this->belongsTo(Employee::class);
     }
 
+    /**
+     * Relationship to transactions (has many).
+     */
     public function transactions()
     {
         return $this->hasMany(Transaction::class);

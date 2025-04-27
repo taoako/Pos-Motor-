@@ -1,44 +1,52 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
-use Illuminate\Http\Request;
-use App\Models\Employee;
+use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller
 {
-    public function store(Request $request)
+    /**
+     * Show the registration form.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function showRegistrationForm()
     {
-        $validated = $request->validate([
-            'first_name' => 'required|string|max:100',
-            'last_name'  => 'required|string|max:100',
-            'email'      => 'required|email|unique:employees,email',
-            'phone'      => 'required|string|max:20',
-            'address'    => 'required|string|max:255',
-            'position'   => 'required|string',
-            'username'   => 'required|string|unique:users,username',
-            'password'   => 'required|string|min:6',
+        return view('auth.register');
+    }
+
+    /**
+     * Handle the registration process.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function register(Request $request)
+    {
+        // Validate the input
+        $validatedData = Validator::make($request->all(), [
+            'employee_id' => 'required|unique:users',
+            'username' => 'required|unique:users',
+            'password' => 'required|min:6|confirmed', // Ensure password confirmation field exists
+        ])->validate();
+
+        // Create the user and hash the password
+        $user = User::create([
+            'employee_id' => $request->employee_id,
+            'username' => $request->username,
+            'password' => $request->password,  // Password will be hashed automatically by the model
         ]);
 
-        // Save employee
-        $employee = Employee::create([
-            'first_name' => $validated['first_name'],
-            'last_name'  => $validated['last_name'],
-            'email'      => $validated['email'],
-            'phone'      => $validated['phone'],
-            'address'    => $validated['address'],
-            'position'   => $validated['position'],
-        ]);
+        // You can optionally log the user in after registration
+        Auth::login($user);
 
-        // Save user with hashed password
-        User::create([
-            'employee_id' => $employee->id,
-            'username'    => $validated['username'],
-            'password'    => Hash::make($validated['password']),
-        ]);
-
-        return redirect()->back()->with('success', 'User registered successfully!');
+        // Redirect to a desired page after successful registration
+        return redirect()->route('dashboard'); // or wherever you want to redirect
     }
 }
