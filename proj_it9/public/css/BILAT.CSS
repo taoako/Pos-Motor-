@@ -1,10 +1,10 @@
 /* General body styling */
 body {
-    background: linear-gradient(to right, #b1afb4, #353c47); /* Cool purple-to-blue gradient */
+    background-color: #121212; /* Pure dark background */
     font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
-    color: #ffffff;
+    color: #ececec; /* Off-white text */
     height: 100vh;
     display: flex;
     justify-content: center;
@@ -15,98 +15,84 @@ body {
 .container {
     margin: 50px auto;
     padding: 30px;
-    background: url('../images/bilat.jpeg') no-repeat center center; /* Add bilat.jpeg as background */
-    background-size: cover; /* Ensure the image covers the entire container */
-    border-radius: 20px; /* Rounded corners */
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
-    animation: slideUp 1s ease-out; /* Slide-up animation for the container */
-    max-width: 600px; /* Center the container and limit its width */
+    background-color: #1e1e1e; /* Dark gray container */
+    border-radius: 16px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
+    animation: slideUp 1s ease-out;
+    max-width: 600px;
     position: relative;
-    overflow: hidden; /* Hide overflow for animations */
-    color: #ffffff; /* White text for contrast */
+    overflow: hidden;
 }
 
-/* Add a semi-transparent overlay for better text readability */
-.container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5); /* Black overlay with 50% opacity */
-    z-index: 1;
-    border-radius: 20px; /* Match the container's rounded corners */
-}
-
-/* Ensure all text inside the container is above the overlay */
-.container > * {
-    position: relative;
-    z-index: 2;
-}
-
-/* Card styling */
+/* Card styling remains transparent */
 .card {
-    background-color: transparent; /* Transparent background to show the container's image */
-    border-radius: 20px;
-    overflow: hidden; /* Ensure content stays within the card */
+    background-color: transparent;
+    border-radius: 16px;
+    overflow: hidden;
 }
 
 /* Card header styling */
 .card-header {
-    color: #ffffff; /* White text for contrast */
+    color: #ffffff;
     text-align: center;
     padding: 20px;
     font-size: 2rem;
-    font-weight: bold;
-    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5); /* Subtle shadow for text visibility */
+    font-weight: 700;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
 }
 
 /* Form label styling */
 .form-label {
-    font-weight: bold;
-    color: #ffffff; /* White text for labels */
+    font-weight: 600;
+    color: #ececec;
 }
 
 /* Form input and select styling */
-.form-select, .form-control {
-    border-radius: 10px;
-    border: 1px solid #ccc;
+.form-select,
+.form-control {
+    width: 100%;
     padding: 12px;
-    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
-    color: #333333; /* Dark gray text */
-    transition: all 0.3s ease;
+    margin-bottom: 20px;
+    background-color: #2a2a2a; /* Dark input background */
+    border: 1px solid #3a3a3a;
+    border-radius: 8px;
+    color: #ececec;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.form-select:focus, .form-control:focus {
-    border-color: #6a11cb; /* Purple border on focus */
-    box-shadow: 0 0 8px rgba(106, 17, 203, 0.3); /* Purple glow */
+.form-select:focus,
+.form-control:focus {
+    border-color: #bb86fc; /* Soft purple accent */
+    box-shadow: 0 0 8px rgba(187, 134, 252, 0.5);
+    outline: none;
 }
 
 /* Button styling */
 button {
-    background-color: #6a11cb; /* Purple background */
+    display: inline-block;
+    padding: 14px 32px;
+    background: linear-gradient(135deg, #bb86fc 0%, #6200ea 100%); /* Purple gradient */
     color: #ffffff;
     border: none;
-    padding: 12px 30px;
     border-radius: 50px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    transition: all 0.3s ease;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
     cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 12px rgba(98, 0, 234, 0.4);
 }
 
 button:hover {
-    background-color: #2575fc; /* Blue on hover */
-    transform: scale(1.05); /* Slight zoom effect */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(98, 0, 234, 0.6);
 }
 
 /* Success and error messages */
 .alert-success {
-    background-color: #27ae60; /* Green success */
-    color: white;
+    background-color: #388e3c; /* Dark green */
+    color: #e8f5e9;
     padding: 15px;
     border-radius: 12px;
     margin-bottom: 20px;
@@ -114,27 +100,12 @@ button:hover {
 }
 
 .alert-danger {
-    background-color: #e74c3c; /* Red error */
-    color: white;
+    background-color: #b00020; /* Dark red */
+    color: #ffebee;
     padding: 15px;
     border-radius: 12px;
     margin-bottom: 20px;
     text-align: center;
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-    .container {
-        padding: 20px;
-    }
-
-    .card-header {
-        font-size: 1.5rem; /* Smaller header size for mobile */
-    }
-
-    button {
-        width: 100%;
-    }
 }
 
 /* Animations */
@@ -146,5 +117,22 @@ button:hover {
     to {
         transform: translateY(0);
         opacity: 1;
+    }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+        margin: 20px;
+    }
+
+    .card-header {
+        font-size: 1.6rem;
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
     }
 }

@@ -16,10 +16,11 @@ class Employee extends Model
         'phone',
         'address',
         'position',
+        'user_id', // Ensure this is fillable
     ];
 
-    public function users()
+    public function user()
     {
-        return $this->hasOne(User::class);
+        return $this->belongsTo(User::class);
     }
 }

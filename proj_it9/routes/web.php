@@ -5,15 +5,21 @@ use App\Http\Controllers\StockController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\SupplierController;
-use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\UserController;
-<<<<<<< HEAD
 use App\Http\Controllers\ProfileController;
-=======
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
->>>>>>> d4f05414767b75983a03c5294ac03e60f22a1544
+
+
+
+Route::middleware('auth')->group(function () {
+    Route::get('/employees', [EmployeeController::class, 'index'])->name('employees.index'); // List all employees
+    Route::get('/employees/{id}/edit', [EmployeeController::class, 'edit'])->name('employees.edit'); // Edit employee
+    Route::put('/employees/{id}', [EmployeeController::class, 'update'])->name('employees.update'); // Update employee
+    Route::delete('/employees/{id}', [EmployeeController::class, 'destroy'])->name('employees.destroy'); // Delete employee
+});
 
 // =========================
 // Authentication Routes
@@ -79,26 +85,17 @@ Route::middleware('auth')->get('/search', function (Request $request) {
     return view('search.results', compact('query')); // Use a view for displaying search results
 })->name('search');
 
-<<<<<<< HEAD
-
-
-
-Route::middleware('auth')->put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
-=======
 // =========================
 // Profile Settings Routes
 // =========================
-Route::middleware('auth')->get('/profile/settings', function () {
-    return view('profile.settings'); // Profile settings page
-})->name('profile.settings');
+Route::middleware('auth')->put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 
 // =========================
->>>>>>> d4f05414767b75983a03c5294ac03e60f22a1544
 // Register Routes
 // =========================
-Route::middleware('auth')->get('/register', function () {
-    return view('auth.register'); // Register a new user
-})->name('register');
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::middleware('auth')->get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
 
 Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
 
@@ -108,7 +105,7 @@ Route::post('/register', [RegisterController::class, 'store'])->name('register.s
 Route::post('/employee/store', [EmployeeController::class, 'store'])->name('employee.store');
 Route::post('/user/store', [UserController::class, 'store'])->name('user.store');
 
-// Route for creating a free user account (inserted code)
+// Route for creating a free user account
 Route::get('/create-free-account', [UserController::class, 'createFreeAccount'])->name('create.free.account');
 
 // =========================
