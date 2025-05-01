@@ -2,46 +2,67 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Supplier;
+use Illuminate\Http\Request;
 
 class SupplierController extends Controller
 {
-    /**
-     * Show the form for creating a new supplier.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function create()
+    public function content()
     {
-        return view('supplier.create'); // Return the Blade view for adding a supplier
+        $suppliers = Supplier::latest()->paginate(10); // Fetch suppliers with pagination
+        return view('partials.suppliers-content', compact('suppliers'));
     }
 
-    /**
-     * Store a newly created supplier in the database.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
+    public function index()
+    {
+        $suppliers = Supplier::latest()->paginate(10);
+        return view('partials.suppliers-content', compact('suppliers'));
+    }
+
+    public function create()
+    {
+        return view('suppliers.create');
+    }
+
     public function store(Request $request)
     {
-        // Validate the incoming request data
-        $request->validate([
+        $validated = $request->validate([
             'supplier_name' => 'required|string|max:255',
-            'email' => 'nullable|email|unique:suppliers,email|max:255',
-            'phone' => 'nullable|string|max:15',
-            'address' => 'nullable|string|max:500',
+            'contact_person' => 'nullable|string|max:255',
+            'contact_number' => 'nullable|string|max:50',
+            'address' => 'nullable|string|max:255',
+            'email' => 'nullable|email|max:255', // Add email validation
         ]);
 
-        // Create a new supplier
-        Supplier::create([
-            'supplier_name' => $request->supplier_name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'address' => $request->address,
+        Supplier::create($validated);
+
+        return redirect()->route('dashboard')->with('success', 'Supplier created successfully.');
+    }
+
+    public function edit(Supplier $supplier)
+    {
+        return view('suppliers.edit', compact('supplier'));
+    }
+
+    public function update(Request $request, Supplier $supplier)
+    {
+        $validated = $request->validate([
+            'supplier_name' => 'required|string|max:255',
+            'contact_person' => 'nullable|string|max:255',
+            'contact_number' => 'nullable|string|max:50',
+            'address' => 'nullable|string|max:255',
+            'email' => 'nullable|email|max:255', // Add email validation
         ]);
 
-        // Redirect back to the supplier creation form with a success message
-        return redirect()->route('supplier.add')->with('success', 'Supplier added successfully!');
+        $supplier->update($validated);
+
+        return redirect()->route('dashboard')->with('success', 'Supplier updated successfully.');
+    }
+
+    public function destroy(Supplier $supplier)
+    {
+        $supplier->delete();
+
+        return redirect()->route('dashboard')->with('success', 'Supplier deleted successfully.');
     }
 }

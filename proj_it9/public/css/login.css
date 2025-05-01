@@ -1,6 +1,6 @@
 /* Set the background image for the entire page */
 body {
-    background-image: url('../images/lambo.jpeg'); /* Replace with your desired image path */
+    background-image: url('../images/download\ \(1\).jpg'); /* Replace with your desired image path */
     background-size: cover; /* Ensure the image covers the entire page */
     background-position: center; /* Center the image */
     background-attachment: fixed; /* Keep the background fixed during scrolling */
@@ -26,7 +26,7 @@ body {
 /* Style the login container */
 .login-container {
     display: flex;
-    background-image: url('../images/lambo.jpeg'); /* Relative path to the image */
+    background-image: url('../images/download\ \(1\).jpg'); /* Relative path to the image */
     background-size: cover; /* Ensure the image covers the container */
     background-position: center; /* Center the image */
     padding: 20px;

@@ -18,14 +18,6 @@
         </div>
         @endif
 
-        <div class="text-center mb-4">
-            <h2 class="fw-bold">Employee & User Registration</h2>
-        </div>
-
-        <!-- Trigger button (so you can actually open it!) -->
-        <button class="btn btn-dark mb-4" data-bs-toggle="modal" data-bs-target="#registerModal">
-            Open Registration
-        </button>
 
         <!-- Registration Modal -->
         <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel">

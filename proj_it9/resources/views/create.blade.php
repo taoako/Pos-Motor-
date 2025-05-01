@@ -67,9 +67,9 @@
             <div class="card-body">
                 <!-- Success Message -->
                 @if(session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
                 @endif
 
                 <!-- Form Start -->
@@ -81,14 +81,14 @@
                         <select class="form-select" name="stock_in_transaction_id" required>
                             <option value="">Select Transaction</option>
                             @foreach ($transactions as $transaction)
-                                <option value="{{ $transaction->id }}" 
-                                    {{ old('stock_in_transaction_id') == $transaction->id ? 'selected' : '' }}>
-                                    {{ $transaction->id }} - {{ $transaction->purchase_date }}
-                                </option>
+                            <option value="{{ $transaction->id }}"
+                                {{ old('stock_in_transaction_id') == $transaction->id ? 'selected' : '' }}>
+                                {{ $transaction->id }} - {{ $transaction->purchase_date }}
+                            </option>
                             @endforeach
                         </select>
                         @error('stock_in_transaction_id')
-                            <div class="text-danger mt-2">{{ $message }}</div>
+                        <div class="text-danger mt-2">{{ $message }}</div>
                         @enderror
                     </div>
 
@@ -97,14 +97,14 @@
                         <select class="form-select" name="product_id" required>
                             <option value="">Select Product</option>
                             @foreach ($products as $product)
-                                <option value="{{ $product->id }}"
-                                    {{ old('product_id') == $product->id ? 'selected' : '' }}>
-                                    {{ $product->name }}
-                                </option>
+                            <option value="{{ $product->id }}"
+                                {{ old('product_id') == $product->id ? 'selected' : '' }}>
+                                {{ $product->name }}
+                            </option>
                             @endforeach
                         </select>
                         @error('product_id')
-                            <div class="text-danger mt-2">{{ $message }}</div>
+                        <div class="text-danger mt-2">{{ $message }}</div>
                         @enderror
                     </div>
 
@@ -112,7 +112,7 @@
                         <label for="quantity" class="form-label">Quantity</label>
                         <input type="number" class="form-control" name="quantity" min="1" value="{{ old('quantity') }}" required>
                         @error('quantity')
-                            <div class="text-danger mt-2">{{ $message }}</div>
+                        <div class="text-danger mt-2">{{ $message }}</div>
                         @enderror
                     </div>
 
@@ -120,7 +120,7 @@
                         <label for="cost_price" class="form-label">Cost Price</label>
                         <input type="number" class="form-control" name="cost_price" step="0.01" value="{{ old('cost_price') }}" required>
                         @error('cost_price')
-                            <div class="text-danger mt-2">{{ $message }}</div>
+                        <div class="text-danger mt-2">{{ $message }}</div>
                         @enderror
                     </div>
 
@@ -128,7 +128,7 @@
                         <label for="total_cost" class="form-label">Total Cost</label>
                         <input type="number" class="form-control" name="total_cost" step="0.01" value="{{ old('total_cost') }}" required>
                         @error('total_cost')
-                            <div class="text-danger mt-2">{{ $message }}</div>
+                        <div class="text-danger mt-2">{{ $message }}</div>
                         @enderror
                     </div>
 

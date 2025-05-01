@@ -4,22 +4,17 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\InventoryController;
-use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
 
 
-
-Route::middleware('auth')->group(function () {
-    Route::get('/employees', [EmployeeController::class, 'index'])->name('employees.index'); // List all employees
-    Route::get('/employees/{id}/edit', [EmployeeController::class, 'edit'])->name('employees.edit'); // Edit employee
-    Route::put('/employees/{id}', [EmployeeController::class, 'update'])->name('employees.update'); // Update employee
-    Route::delete('/employees/{id}', [EmployeeController::class, 'destroy'])->name('employees.destroy'); // Delete employee
-});
 
 // =========================
 // Authentication Routes
@@ -29,87 +24,102 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // =========================
-// Dashboard Routes
-// =========================
-Route::middleware('auth')->get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
-
-// =========================
-// Dynamic Content Routes
-// =========================
-Route::middleware('auth')->get('/dashboard/content', function () {
-    return view('partials.dashboard-content');
-})->name('dashboard.content');
-
-Route::middleware('auth')->get('/stock-in/content', function () {
-    return view('partials.stock-in-content');
-})->name('stock-in.content');
-
-Route::middleware('auth')->get('/sales/content', function () {
-    return view('partials.sales-content');
-})->name('sales.content');
-
-Route::middleware('auth')->get('/inventory/content', function () {
-    return view('partials.inventory-content');
-})->name('inventory.content');
-
-// =========================
-// Stock-In Routes
-// =========================
-Route::middleware('auth')->get('/stock-in', [StockController::class, 'index'])->name('stock-in');
-Route::middleware('auth')->get('/stock-in-details/create', [StockController::class, 'create'])->name('stock-in-details.create');
-Route::middleware('auth')->post('/stock-in-details', [StockController::class, 'store'])->name('stock-in-details.store');
-
-// =========================
-// Sales Routes
-// =========================
-Route::middleware('auth')->get('/sales', [SalesController::class, 'index'])->name('sales');
-
-// =========================
-// Inventory Routes
-// =========================
-Route::middleware('auth')->get('/inventory', [InventoryController::class, 'index'])->name('inventory');
-
-// =========================
-// Supplier Routes
-// =========================
-Route::middleware('auth')->get('/supplier/add', [SupplierController::class, 'create'])->name('supplier.add'); // Add New Supplier Form
-Route::middleware('auth')->post('/supplier/store', [SupplierController::class, 'store'])->name('supplier.store'); // Store New Supplier
-
-// =========================
-// Search Routes
-// =========================
-Route::middleware('auth')->get('/search', function (Request $request) {
-    $query = $request->query('query');
-    return view('search.results', compact('query')); // Use a view for displaying search results
-})->name('search');
-
-// =========================
-// Profile Settings Routes
-// =========================
-Route::middleware('auth')->put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
-
-// =========================
 // Register Routes
 // =========================
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
-Route::middleware('auth')->get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
-Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
-
 Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
 
 // =========================
-// Employee and User Routes
+// Protected Routes
 // =========================
-Route::post('/employee/store', [EmployeeController::class, 'store'])->name('employee.store');
-Route::post('/user/store', [UserController::class, 'store'])->name('user.store');
+Route::middleware('auth')->group(function () {
+    // Dashboard
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
 
-// Route for creating a free user account
-Route::get('/create-free-account', [UserController::class, 'createFreeAccount'])->name('create.free.account');
+    // Dynamic Content (AJAX)
+    Route::get('/dashboard/content', function () {
+        return view('partials.dashboard-content');
+    })->name('dashboard.content');
+
+    // Stock In Routes
+    Route::prefix('stock-in')->group(function () {
+        Route::get('/', [StockController::class, 'index'])->name('stock-in');
+        Route::get('/content', function () {
+            return view('partials.stock-in-content');
+        })->name('stock-in.content');
+        Route::get('/details/create', [StockController::class, 'create'])->name('stock-in-details.create');
+        Route::post('/details', [StockController::class, 'store'])->name('stock-in-details.store');
+    });
+
+    // Sales Routes
+    Route::prefix('sales')->group(function () {
+        Route::get('/', [SalesController::class, 'index'])->name('sales');
+        Route::get('/content', function () {
+            return view('partials.sales-content');
+        })->name('sales.content');
+    });
+
+    // Inventory Routes
+    Route::prefix('inventory')->group(function () {
+        Route::get('/', [InventoryController::class, 'index'])->name('inventory');
+        Route::get('/content', function () {
+            return view('partials.inventory-content');
+        })->name('inventory.content');
+    });
+
+    // Supplier Routes
+    Route::get('/suppliers/content', [SupplierController::class, 'content'])->name('suppliers.content');
+    Route::get('/suppliers/list', [SupplierController::class, 'list'])->name('suppliers.list');;
+
+    Route::get('/suppliers', [SupplierController::class, 'index'])->name('suppliers.index'); // List all suppliers
+    Route::get('/suppliers/create', [SupplierController::class, 'create'])->name('suppliers.create'); // Show form to create a new supplier
+    Route::post('/suppliers', [SupplierController::class, 'store'])->name('suppliers.store'); // Store a new supplier
+    Route::get('/suppliers/{supplier}/edit', [SupplierController::class, 'edit'])->name('suppliers.edit'); // Show form to edit a supplier
+    Route::put('/suppliers/{supplier}', [SupplierController::class, 'update'])->name('suppliers.update'); // Update a supplier
+    Route::delete('/suppliers/{supplier}', [SupplierController::class, 'destroy'])->name('suppliers.destroy'); // Delete
+
+
+    Route::middleware('auth')->group(function () {
+        // Product Routes
+        Route::get('/products/content', [ProductController::class, 'content'])->name('products.content');
+        Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
+        Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+        Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
+        Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
+        Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+
+        // Category Routes
+        Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
+    });
+
+    // Employee Routes
+    Route::prefix('employees')->group(function () {
+        Route::get('/', [EmployeeController::class, 'index'])->name('employees.index');
+        Route::get('/{id}/edit', [EmployeeController::class, 'edit'])->name('employees.edit');
+        Route::put('/{id}', [EmployeeController::class, 'update'])->name('employees.update');
+        Route::delete('/{id}', [EmployeeController::class, 'destroy'])->name('employees.destroy');
+        Route::post('/store', [EmployeeController::class, 'store'])->name('employee.store');
+    });
+
+    // User Routes
+    Route::post('/user/store', [UserController::class, 'store'])->name('user.store');
+
+    // Profile Routes
+    Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+
+    // Search Routes
+    Route::get('/search', function (Request $request) {
+        $query = $request->query('query');
+        return view('search.results', compact('query'));
+    })->name('search');
+});
+
+
 
 // =========================
-// Fallback Route for 404 Errors
+// Fallback 404 Error Page
 // =========================
 Route::fallback(function () {
     return response()->view('errors.404', [], 404);

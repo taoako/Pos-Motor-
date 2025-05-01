@@ -17,6 +17,8 @@ class Product extends Model
         'barcode',
         'unit',
         'cost_price',
+        'stock',
+        'image',
     ];
 
     public function category()
