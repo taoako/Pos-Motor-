@@ -1,35 +1,35 @@
 <?php
 
+// Migration for Products table
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class CreateProducts extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+    public function up()
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->id(); // Primary key
-            $table->string('product_name')->unique(); // Product name should be unique
-            $table->foreignId('category_id')->constrained('categories')->onDelete('cascade'); // Foreign key to categories
-            $table->foreignId('supplier_id')->constrained('suppliers')->onDelete('cascade'); // Foreign key to suppliers
-            $table->string('sku')->unique()->nullable(); // SKU can be nullable
-            $table->string('barcode')->unique()->nullable(); // Barcode can be nullable
-            $table->string('unit')->nullable(); // Unit of the product (kg, pcs, etc.)
-            $table->decimal('cost_price', 10, 2)->nullable(); // Nullable cost price field
+            $table->id();
+            $table->string('product_name');
+            $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('supplier_id'); // Foreign key to the suppliers table
+            $table->string('sku')->nullable();
+            $table->string('barcode')->nullable();
+            $table->string('unit')->nullable();
+            $table->decimal('cost_price', 10, 2)->default(0.00);
+            $table->integer('stock')->default(0);
+            $table->string('image')->nullable();
+            $table->timestamps();
 
-            $table->timestamps(); // Created at and updated at fields
+            // Defining foreign key constraints
+            $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('products');
     }
-};
+}

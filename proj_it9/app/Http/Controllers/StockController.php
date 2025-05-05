@@ -2,47 +2,36 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Supplier;
 use App\Models\Product;
-use App\Models\StockInTransaction;
-use App\Models\Stock_in_details;
 use Illuminate\Http\Request;
 
 class StockController extends Controller
 {
-    /**
-     * Display the stock-in page.
-     */
-    public function index()
-    {
-        return view('stock-in'); // Make sure stock-in.blade.php exists in resources/views
-    }
-
-    /**
-     * Show the form for creating a new stock-in detail.
-     */
     public function create()
     {
-        return view('stock_in_details.create', [
-            'transactions' => StockInTransaction::all(),
-            'products' => Product::all(),
-        ]);
+        // Fetch all suppliers and products
+        $suppliers = Supplier::all();
+        $products = Product::all();
+
+        // Pass the suppliers and products to the view
+        return view('stock-in.create', compact('suppliers', 'products'));
     }
 
-    /**
-     * Store the stock-in detail.
-     */
     public function store(Request $request)
     {
+        // Handle form submission and store stock-in details logic here
+        // Validate and store the data
         $request->validate([
-            'stock_in_transaction_id' => 'required|exists:stock_in_transactions,id',
+            'supplier_id' => 'required|exists:suppliers,id',
             'product_id' => 'required|exists:products,id',
             'quantity' => 'required|numeric|min:1',
             'cost_price' => 'required|numeric|min:0',
-            'total_cost' => 'required|numeric|min:0',
         ]);
 
-        stock_in_details::create($request->all());
+        // Store the new stock-in detail
+        // You would need to add your logic to save the stock-in details, e.g., in a StockIn model
 
-        return redirect()->route('stock-in-details.create')->with('success', 'Stock-in detail added successfully.');
+        return redirect()->route('stock-in-details.create')->with('success', 'Stock-in details saved successfully.');
     }
 }

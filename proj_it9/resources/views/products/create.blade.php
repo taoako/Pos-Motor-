@@ -19,6 +19,10 @@
 <body class="bg-gray-900 text-white">
     <div class="container mt-5">
         <h2 class="text-xl font-bold mb-4">Add Product</h2>
+
+        <!-- Back Button -->
+        <a href="{{ route('dashboard') }}" class="btn btn-secondary mb-3">← Back to Dashboard</a>
+
         <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="mb-3">
