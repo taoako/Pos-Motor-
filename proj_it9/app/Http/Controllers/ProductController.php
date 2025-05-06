@@ -55,8 +55,8 @@ class ProductController extends Controller
         // Create the product
         Product::create($validated);
 
-        // Redirect to the product list with a success message
-        return redirect()->route('products.index')->with('success', 'Product created successfully.');
+        return redirect()->route('dashboard')->with('success', 'Product created successfully.');
+
     }
 
     public function edit(Product $product)
