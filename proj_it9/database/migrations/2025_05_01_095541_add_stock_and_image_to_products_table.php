@@ -9,21 +9,32 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->integer('stock')->default(0)->after('cost_price'); // Add stock field with default value 0
-            $table->string('image')->nullable()->after('stock'); // Add image field
+            if (!Schema::hasColumn('products', 'stock')) {
+                $table->integer('stock')->default(0);  // Add stock column
+            }
+
+            if (!Schema::hasColumn('products', 'image')) {
+                $table->string('image')->nullable();  // Add image column
+            }
         });
     }
 
     /**
      * Reverse the migrations.
      */
-    public function down(): void
+    public function down()
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->dropColumn(['stock', 'image']); // Remove stock and image fields
+            if (Schema::hasColumn('products', 'stock')) {
+                $table->dropColumn('stock');
+            }
+
+            if (Schema::hasColumn('products', 'image')) {
+                $table->dropColumn('image');
+            }
         });
     }
 };

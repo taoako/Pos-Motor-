@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('stock_in_details', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('stock_in_transaction_id')->constrained('stock_in_transactions')->onDelete('cascade');
+            $table->foreignId('stock_in_transaction_id')->nullable()->constrained('stock_in_transactions')->onDelete('cascade'); // Made nullable
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
             $table->integer('quantity'); // Quantity of the product received
             $table->decimal('cost_price', 10, 2); // Cost price of the product at the time of stock in
