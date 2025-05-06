@@ -54,7 +54,7 @@
                 <input name="image" type="file" class="form-control">
             </div>
             <button class="btn btn-primary">Save</button>
-            <a href="{{ route('products.content') }}" class="btn btn-secondary">Cancel</a>
+            <a href="{{ route('dashboard') }}" class="btn btn-secondary">Cancel</a>
         </form>
     </div>
 
