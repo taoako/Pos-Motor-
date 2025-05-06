@@ -13,6 +13,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\StockInDetailsController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 // =========================
 // Authentication Routes
@@ -44,15 +45,14 @@ Route::middleware('auth')->group(function () {
     // =========================
     // Stock-In Routes
     // =========================
-    Route::prefix('stock-in')->group(function () {
-        Route::get('/', [StockController::class, 'index'])->name('stock-in');
-        Route::get('/content', function () {
-            return view('partials.stock-in-content');
-        })->name('stock-in.content');
-        Route::get('/details/create', [StockInDetailsController::class, 'create'])->name('stock-in-details.create');
-        Route::post('/details', [StockInDetailsController::class, 'store'])->name('stock-in-details.store');
-        Route::get('/details', [StockInDetailsController::class, 'index'])->name('stock-in-details.index'); // Added this route
+    // routes/web.php
+    Route::prefix('stock-in')->name('stock-in.')->group(function () {
+        Route::get('/content', [StockInDetailsController::class, 'content'])->name('content'); // Full name: stock-in.content
+        Route::get('/details', [StockInDetailsController::class, 'index'])->name('index'); // stock-in.index
+        Route::get('/details/create', [StockInDetailsController::class, 'create'])->name('create'); // stock-in.create
+        Route::post('/details', [StockInDetailsController::class, 'store'])->name('store'); // stock-in.store
     });
+
 
     // =========================
     // Sales Routes

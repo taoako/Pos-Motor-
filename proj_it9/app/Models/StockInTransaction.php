@@ -11,7 +11,7 @@ class StockInTransaction extends Model
 
     protected $fillable = [
         'supplier_id',
-        'transaction_date',
+        'purchase_date',
         'total_amount',
         'status',
     ];

@@ -42,8 +42,8 @@ class ProductController extends Controller
             'sku' => 'nullable|string|max:255',
             'barcode' => 'required|numeric|digits:12',
             'unit' => 'nullable|string|max:50',
-            'cost_price' => 'required|numeric|min:0',
-            'stock' => 'required|integer|min:0',
+
+
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -52,11 +52,12 @@ class ProductController extends Controller
             $validated['image'] = $request->file('image')->store('products', 'public');
         }
 
+        $validated['stock'] = 0;
+
         // Create the product
         Product::create($validated);
 
         return redirect()->route('dashboard')->with('success', 'Product created successfully.');
-
     }
 
     public function edit(Product $product)
@@ -76,7 +77,7 @@ class ProductController extends Controller
             'barcode' => 'required|numeric|digits:12',
             'unit' => 'nullable|string|max:50',
             'cost_price' => 'required|numeric|min:0',
-            'stock' => 'required|integer|min:0',
+
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
