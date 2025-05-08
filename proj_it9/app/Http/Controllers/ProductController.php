@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Picqer\Barcode\BarcodeGeneratorPNG;
 
 class ProductController extends Controller
 {
@@ -32,20 +33,28 @@ class ProductController extends Controller
         return view('products.create', compact('categories', 'suppliers'));
     }
 
+
     public function store(Request $request)
     {
         // Validate the form data
         $validated = $request->validate([
             'product_name' => 'required|string|max:255',
+            'brand' => 'nullable|string|max:255', // Validate brand
             'category_id' => 'required|exists:categories,id',
             'supplier_id' => 'nullable|exists:suppliers,id',
             'sku' => 'nullable|string|max:255',
-            'barcode' => 'required|numeric|digits:12',
             'unit' => 'nullable|string|max:50',
-
-
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+
+        // Generate a unique barcode
+        $validated['barcode'] = rand(100000000000, 999999999999); // Generate a 12-digit barcode
+
+        // Generate a barcode image
+        $generator = new BarcodeGeneratorPNG();
+        $barcodeImage = $generator->getBarcode($validated['barcode'], $generator::TYPE_CODE_128);
+        $barcodePath = 'barcodes/' . $validated['barcode'] . '.png';
+        Storage::disk('public')->put($barcodePath, $barcodeImage);
 
         // Handle image upload
         if ($request->hasFile('image')) {
@@ -101,6 +110,6 @@ class ProductController extends Controller
 
         $product->delete();
 
-        return redirect()->route('products.index')->with('success', 'Product deleted successfully.');
+        return redirect()->route('dashboard')->with('success', 'Product deleted successfully.');
     }
 }

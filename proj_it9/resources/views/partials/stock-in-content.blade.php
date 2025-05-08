@@ -16,6 +16,8 @@
                     <th class="py-3 px-6 text-left">Quantity</th>
                     <th class="py-3 px-6 text-left">Supplier</th>
                     <th class="py-3 px-6 text-left">Date</th>
+                    <th class="py-3 px-6 text-left">Total Amount</th>
+                    <th class="py-3 px-6 text-left">Status</th>
                 </tr>
             </thead>
             <tbody>
@@ -25,10 +27,12 @@
                     <td class="py-3 px-6">{{ $detail->quantity }}</td>
                     <td class="py-3 px-6">{{ $detail->stockInTransaction->supplier->supplier_name ?? 'N/A' }}</td>
                     <td class="py-3 px-6">{{ $detail->stockInTransaction->purchase_date ?? 'N/A' }}</td>
+                    <td class="py-3 px-6">{{ number_format($detail->stockInTransaction->total_amount, 2) }}</td>
+                    <td class="py-3 px-6">{{ ucfirst($detail->stockInTransaction->status) }}</td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="4" class="py-3 px-6 text-center text-gray-400">No stock-in records found.</td>
+                    <td colspan="6" class="py-3 px-6 text-center text-gray-400">No stock-in records found.</td>
                 </tr>
                 @endforelse
             </tbody>

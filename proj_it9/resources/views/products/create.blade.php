@@ -21,13 +21,15 @@
         <h2 class="text-xl font-bold mb-4">Add Product</h2>
 
         <!-- Back Button -->
-        <a href="{{ route('dashboard') }}" class="btn btn-secondary mb-3">← Back to Dashboard</a>
-
         <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="mb-3">
                 <label>Product Name</label>
                 <input name="product_name" class="form-control" required value="{{ old('product_name') }}">
+            </div>
+            <div class="mb-3">
+                <label>Brand</label>
+                <input name="brand" class="form-control" value="{{ old('brand') }}">
             </div>
             <div class="mb-3">
                 <label>Category</label>
@@ -37,7 +39,6 @@
                     <option value="{{ $category->id }}">{{ $category->category_name }}</option>
                     @endforeach
                 </select>
-                <button type="button" id="add-category" class="btn btn-link">+ Add New Category</button>
             </div>
             <div class="mb-3">
                 <label>Supplier</label>
@@ -48,11 +49,6 @@
                     @endforeach
                 </select>
             </div>
-            <div class="mb-3">
-                <label>Barcode</label>
-                <input name="barcode" class="form-control" required value="{{ old('barcode') }}">
-            </div>
-
             <div class="mb-3">
                 <label>Image</label>
                 <input name="image" type="file" class="form-control">
