@@ -45,8 +45,7 @@ class RegisterController extends Controller
                     'position'   => $validated['position'],
                 ]);
 
-                // — COMMENTED OUT DD so user creation can proceed — 
-                // dd($employee->toArray());
+
 
                 // Create the User and associate it with the Employee
                 $user = User::create([

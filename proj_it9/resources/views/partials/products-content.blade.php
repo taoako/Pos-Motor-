@@ -11,11 +11,8 @@
                 <tr>
                     <th class="py-3 px-6 text-left">Name</th>
                     <th class="py-3 px-6 text-left">Brand</th>
-
                     <th class="py-3 px-6 text-left">Category</th>
-
                     <th class="py-3 px-6 text-left">Barcode</th>
-
                     <th class="py-3 px-6 text-left">Image</th>
                     <th class="py-3 px-6 text-left">Actions</th>
                 </tr>
@@ -25,7 +22,6 @@
                 <tr>
                     <td class="py-3 px-6">{{ $product->product_name }}</td>
                     <td class="py-3 px-6">{{ $product->brand }}</td>
-
                     <td class="py-3 px-6">{{ $product->category->category_name }}</td>
                     <td class="py-3 px-6">
                         <img src="{{ asset('storage/barcodes/' . $product->barcode . '.png') }}" alt="Barcode" class="w-32 h-8">
@@ -55,7 +51,7 @@
         </table>
     </div>
 
-    <div class="mt-4">
-        {{ $products->links() }}
+    <div id="pagination-links" class="mt-4">
+        {{ $products->withPath(route('products.content'))->links('pagination::tailwind') }}
     </div>
 </div>

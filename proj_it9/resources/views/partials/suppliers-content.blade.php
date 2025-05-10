@@ -54,9 +54,10 @@
         </table>
     </div>
 
-    <div class="mt-4">
-        {{ $suppliers->links() }}
+    <div id="pagination-links" class="mt-4">
+        {{ $suppliers->withPath(route('suppliers.content'))->links('pagination::tailwind') }}
     </div>
+
 </div>
 
 <!-- Tailwind CSS CDN -->

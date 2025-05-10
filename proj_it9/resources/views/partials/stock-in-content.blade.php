@@ -40,9 +40,10 @@
     </div>
 
     <!-- Pagination Links -->
-    <div class="mt-4">
-        {{ $stockInDetails->links() }}
+    <div id="pagination-links" class="mt-4">
+        {{ $stockInDetails->withPath(route('stock-in.content'))->links('pagination::tailwind') }}
     </div>
+
 </div>
 
 <!-- Tailwind CSS CDN -->

@@ -106,19 +106,16 @@ Route::middleware('auth')->group(function () {
     // =========================
     // Product Routes
     // =========================
-    Route::prefix('products')->group(function () {
-        Route::get('/', [ProductController::class, 'index'])->name('products.index');
-        Route::get('/content', [ProductController::class, 'content'])->name('products.content');
-        Route::get('/create', [ProductController::class, 'create'])->name('products.create');
-        Route::post('/', [ProductController::class, 'store'])->name('products.store');
-        Route::get('/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
-        Route::put('/{product}', [ProductController::class, 'update'])->name('products.update');
-        Route::delete('/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
-    });
+    // Route for dynamically loading product content
+    Route::get('/products/content', [ProductController::class, 'content'])->name('products.content');
 
-    Route::get('/products', function () {
-        return view('partials.products-content'); // Ensure this view exists
-    })->name('products.content');
+    // Other product-related routes
+    Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+    Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
+    Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+    Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
+    Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
+    Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
 
     // =========================
     // Category Routes

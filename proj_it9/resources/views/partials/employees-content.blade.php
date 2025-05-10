@@ -37,7 +37,8 @@
         </table>
     </div>
 
-    <div class="mt-4">
-        {{ $employees->links() }}
+    <div id="pagination-links" class="mt-4">
+        {{ $employees->withPath(route('employees.content'))->links('pagination::tailwind') }}
     </div>
+
 </div>

@@ -10,27 +10,28 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
 
-    <!-- Bootstrap (for modals) -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-
     <!-- Your custom CSS -->
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}" />
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 
 <body class="bg-gray-900 text-white fade-in">
     {{-- Session Alert --}}
     @if (session('success'))
-    <div class="alert alert-success alert-dismissible fade show position-fixed top-3 start-50 translate-middle-x z-50"
-        role="alert">
-        {{ session('success') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <div class="fixed top-3 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-4 py-2 rounded shadow z-50 flex items-center justify-between min-w-[300px] max-w-md">
+        <span>{{ session('success') }}</span>
+        <button onclick="this.parentElement.remove()" class="ml-4 text-white hover:text-gray-200">&times;</button>
     </div>
     @endif
 
     <div class="flex min-h-screen">
         <!-- Sidebar -->
         <aside id="sidebar"
-            class="bg-gray-800 w-64 flex flex-col items-center py-6 space-y-6 transition-all duration-300">
+            class="bg-gray-800 w-64 flex flex-col items-center py-6 space-y-6 transition-all duration-300 transform -translate-x-0">
             <div class="flex space-x-2">
                 <img class="w-8 h-8 rounded-full"
                     src="https://storage.googleapis.com/a1aa/image/255218a3-ffde-424c-f1d3-6986b8cf7111.jpg"
@@ -75,28 +76,32 @@
                     <i class="fas fa-box"></i>
                     <span>Products</span>
                 </button>
-                <button data-url="{{ route('employees.content') }}" class="nav-link flex items-center space-x-3 bg-gray-700 rounded-full py-2 px-5 w-full text-center hover:bg-gray-600 transition-colors">
+                @if (Auth::user()->employee->posistion === 'Admin')
+                <button data-url="{{ route('employees.content') }}"
+                    class="nav-link flex items-center space-x-3 bg-gray-700 rounded-full py-2 px-5 w-full text-center hover:bg-gray-600 transition-colors">
                     <i class="fas fa-users"></i>
                     <span>Manage Employees</span>
                 </button>
-                <button onclick="window.open('{{ url('/pos') }}', '_blank')"
+                @endif
+
+                @if (Auth::user()->employee->posistion === 'Admin')
+                <button onclick="window.open(`{{ url('/pos') }}`, '_blank')"
                     class="nav-link flex items-center space-x-3 bg-gray-700 rounded-full py-2 px-5 w-full text-center hover:bg-gray-600 transition-colors">
                     <i class="fas fa-cash-register"></i>
                     <span>POS</span>
                 </button>
+                @endif
             </nav>
         </aside>
 
         <!-- Main content -->
         <main class="flex-1 bg-gray-900 fade-in">
             <header class="bg-gray-800 flex items-center justify-between px-6 py-4">
-                <!-- Sidebar toggle -->
                 <button id="sidebarToggle"
                     class="border-2 border-gray-700 rounded-full p-2 hover:bg-gray-700 transition-colors">
                     <i class="fas fa-bars text-xl"></i>
                 </button>
 
-                <!-- Search form -->
                 <form method="GET" action="{{ route('search') }}"
                     class="flex items-center bg-gray-700 rounded-full px-4 py-2 w-36">
                     <input type="search" name="query" class="outline-none text-xs text-white bg-transparent w-full"
@@ -106,23 +111,20 @@
                     </button>
                 </form>
 
-                <!-- User + settings dropdown -->
                 <div class="flex items-center space-x-4 relative">
-                    <span class="text-white text-xs">
-                        {{ Auth::user()->name ?? 'Admin' }}
+                    <span class="text-white text-xs">,
+                        {{ Auth::user()->employee->first_name . ' ' . Auth::user()->employee->last_name ?? 'Admin' }}
                     </span>
-
                     <button class="bg-orange-600 rounded-full p-2 hover:bg-orange-500 transition-colors">
                         <i class="fas fa-user text-white text-sm"></i>
                     </button>
-
                     <button id="dropdownButton"
                         class="text-white text-xl p-2 hover:bg-gray-700 rounded-full transition-colors">
                         <i class="fas fa-cogs"></i>
                     </button>
-
                     <div id="dropdownMenu"
                         class="hidden absolute right-0 top-full mt-2 w-48 bg-gray-800 rounded-md shadow-lg z-50">
+
                         <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700"
                             data-bs-toggle="modal" data-bs-target="#profileModal">
                             Profile Settings
@@ -134,83 +136,105 @@
                                 Log Out
                             </button>
                         </form>
+
+                        @if (Auth::user()->employee->posistion === 'Admin')
+
                         <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700"
                             data-bs-toggle="modal" data-bs-target="#registerModal">
                             Register Another User
                         </a>
+                        @endif
                     </div>
                 </div>
             </header>
 
-            <!-- Dynamic content area -->
             <div id="main-content" class="p-6 space-y-4">
                 <h1 class="text-2xl font-bold">Welcome to Your Dashboard</h1>
-                <!-- Content appears here -->
             </div>
         </main>
     </div>
 
-    <!-- Bootstrap JS & dynamic loading script -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Sidebar toggle
-            document.getElementById('sidebarToggle').addEventListener('click', () => {
-                document.getElementById('sidebar').classList.toggle('-translate-x-full');
-            });
+        document.addEventListener('DOMContentLoaded', function() {
+            const loadContent = async (url) => {
+                const target = document.getElementById('main-content');
+                try {
+                    const res = await fetch(url, {
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    });
+                    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+                    const text = await res.text();
+                    target.innerHTML = text;
 
-            // Settings dropdown toggle
-            const dropdownButton = document.getElementById('dropdownButton');
-            const dropdownMenu = document.getElementById('dropdownMenu');
-
-            dropdownButton.addEventListener('click', (e) => {
-                e.stopPropagation();
-                dropdownMenu.classList.toggle('hidden');
-            });
-
-            dropdownMenu.addEventListener('click', (e) => {
-                e.stopPropagation();
-            });
-
-            document.addEventListener('click', (e) => {
-                if (!dropdownMenu.classList.contains('hidden')) {
-                    if (!dropdownMenu.contains(e.target) && !dropdownButton.contains(e.target)) {
-                        dropdownMenu.classList.add('hidden');
-                    }
+                    // Reinitialize pagination links after content is loaded
+                    initializePagination();
+                    initializeSidebarButtons();
+                } catch (err) {
+                    console.error(err);
+                    target.innerHTML = `<div class="text-red-500">Failed to load content.</div>`;
                 }
-            });
+            };
 
-            // AJAX content loading: swap only inner #main-content
-            document.querySelectorAll('button[data-url]').forEach(btn => {
-                btn.addEventListener('click', async () => {
-                    try {
-                        const res = await fetch(btn.dataset.url, {
-                            headers: {
-                                'X-Requested-With': 'XMLHttpRequest'
+            const initializePagination = () => {
+                const paginationLinks = document.querySelectorAll('#pagination-links a');
+                if (paginationLinks.length > 0) {
+                    paginationLinks.forEach(link => {
+                        link.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            const url = link.getAttribute('href');
+                            if (url) {
+                                loadContent(url);
                             }
                         });
-                        if (!res.ok) throw new Error('Network error');
+                    });
+                }
+            };
 
-                        const text = await res.text();
-                        const doc = new DOMParser().parseFromString(text, 'text/html');
-                        const frag = doc.getElementById('main-content');
-                        const target = document.getElementById('main-content');
-
-                        if (frag) {
-                            target.innerHTML = frag.innerHTML;
-                        } else {
-                            // Fallback: inject entire response
-                            target.innerHTML = text;
+            const initializeSidebarButtons = () => {
+                const sidebarButtons = document.querySelectorAll('button[data-url]');
+                sidebarButtons.forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const url = btn.dataset.url;
+                        if (url) {
+                            loadContent(url);
                         }
-                    } catch (err) {
-                        console.error(err);
-                        document.getElementById('main-content').innerHTML =
-                            `<div class="text-red-500">Failed to load content. Please check your routes or server configuration.</div>`;
+                    });
+                });
+            };
+
+            // Initialize sidebar buttons and pagination links on page load
+            initializeSidebarButtons();
+            initializePagination();
+
+            // Sidebar toggle functionality
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            if (sidebarToggle) {
+                sidebarToggle.addEventListener('click', () => {
+                    document.getElementById('sidebar').classList.toggle('-translate-x-full');
+                });
+            }
+
+            // Dropdown menu functionality
+            const dropdownButton = document.getElementById('dropdownButton');
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            if (dropdownButton && dropdownMenu) {
+                dropdownButton.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    dropdownMenu.classList.toggle('hidden');
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (!dropdownMenu.classList.contains('hidden') && !dropdownMenu.contains(e.target) && !dropdownButton.contains(e.target)) {
+                        dropdownMenu.classList.add('hidden');
                     }
                 });
-            });
+            }
         });
     </script>
+
     @include('auth.register')
     @include('auth.profile')
 </body>

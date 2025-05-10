@@ -20,7 +20,7 @@ class PosController extends Controller
                 return $product;
             });
 
-        return view('pos', compact('products'));
+        return view('pos.pos', compact('products'));
     }
 
     /**

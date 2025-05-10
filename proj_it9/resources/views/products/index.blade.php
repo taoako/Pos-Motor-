@@ -7,21 +7,21 @@
 
         {{-- Success Message --}}
         @if(session('success'))
-            <div class="bg-green-100 text-green-800 px-4 py-2 rounded mb-4">
-                {{ session('success') }}
-            </div>
+        <div class="bg-green-100 text-green-800 px-4 py-2 rounded mb-4">
+            {{ session('success') }}
+        </div>
         @endif
 
         {{-- Add New Product Button --}}
         <div class="mb-6">
             <a href="{{ route('products.create') }}"
-               class="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-xl shadow">
+                class="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-xl shadow">
                 + Add New Product
             </a>
         </div>
 
         {{-- Include Product Table Partial --}}
-        @include('partial.product-content', ['products' => $products])
+        @include('partials.products-content', ['products' => $products])
     </div>
 </div>
 @endsection

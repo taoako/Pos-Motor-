@@ -14,13 +14,20 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::with('category', 'supplier')->latest()->paginate(10);
-        return view('products.index', compact('products'));
+        return view('partials.products-content', compact('products'));
     }
 
-    public function content()
+    public function content(Request $request)
     {
         $products = Product::with('category', 'supplier')->latest()->paginate(10);
-        return view('partials.products-content', compact('products'));
+
+        // Check if the request is an AJAX request
+        if ($request->ajax()) {
+            return view('partials.products-content', compact('products'))->render();
+        }
+
+        // For non-AJAX requests, return the full view
+        return view('products.index', compact('products'));
     }
 
     public function create()
@@ -41,8 +48,7 @@ class ProductController extends Controller
             'product_name' => 'required|string|max:255',
             'brand' => 'nullable|string|max:255', // Validate brand
             'category_id' => 'required|exists:categories,id',
-            'supplier_id' => 'nullable|exists:suppliers,id',
-            'sku' => 'nullable|string|max:255',
+
             'unit' => 'nullable|string|max:50',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);

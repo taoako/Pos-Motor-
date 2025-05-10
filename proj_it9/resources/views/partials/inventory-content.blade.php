@@ -28,8 +28,8 @@
                     @endforeach
                 </tbody>
             </table>
-            <div class="mt-4">
-                {{ $products->links() }}
+            <div id="pagination-links" class="mt-4">
+                {{ $products->withPath(route('inventory.content'))->links('pagination::tailwind') }}
             </div>
         </div>
 

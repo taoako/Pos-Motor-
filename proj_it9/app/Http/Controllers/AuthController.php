@@ -23,16 +23,30 @@ class AuthController extends Controller
 
         // Attempt to authenticate the user
         if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
-            // Check if the authenticated user is an admin
+            // Get the authenticated user
             $user = Auth::user();
-            if ($user->employee && $user->employee->position === 'Admin') {
-                // Redirect to the dashboard if the user is an admin
-                return redirect()->route('dashboard');
+
+            // Check if the user is linked to an employee
+            if ($user->employee) {
+                $position = $user->employee->position;
+
+                // Redirect based on the employee's position
+                switch ($position) {
+                    case 'Admin':
+                        return redirect()->route('dashboard'); // Admins go to the dashboard
+                    case 'Inventory Staff':
+                        return redirect()->route('dashboard'); // Inventory Staff go to the dashboard
+                    case 'Cashier':
+                        return redirect('/pos'); // Cashiers go directly to the POS
+                    default:
+                        Auth::logout();
+                        return back()->withErrors(['username' => 'Access denied. Unauthorized position.']);
+                }
             }
 
-            // Log out the user if they are not an admin
+            // If no employee is linked, log out the user
             Auth::logout();
-            return back()->withErrors(['username' => 'Access denied. Only Admins can log in.']);
+            return back()->withErrors(['username' => 'Access denied. No employee record found.']);
         }
 
         // Authentication failed, redirect back with an error
