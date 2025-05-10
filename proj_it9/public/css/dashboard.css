@@ -46,27 +46,48 @@ aside {
     }
 }
 
-/* Sidebar buttons */
 aside button {
-    background-color: #e63946; /* Vibrant red for buttons */
-    color: #ffffff; /* White text */
-    padding: 10px 20px;
+    background-color: #e63946;
+    color: #ffffff;
+    padding: 15px 25px;
     margin: 10px 0;
     border: none;
     border-radius: 8px;
-    width: 100%;
+    width: 100%; /* Full width of container */
+    min-width: 200px; /* Minimum width */
+    max-width: 300px; /* Maximum width - increase this for longer buttons */
     text-align: left;
-    font-size: 14px;
+    font-size: 18px;
+    font-weight: 600;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
-    animation: fadeInButton 1.2s ease-in-out; /* Fade-in animation for buttons */
+    animation: fadeInButton 1.2s ease-in-out;
+
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    min-height: 60px;
+    box-sizing: border-box;
+}
+
+aside {
+    display: block;
+    width: 100%;
 }
 
 aside button:hover {
-    background-color: #f75c5c; /* Lighter red hover effect */
+    background-color: #f75c5c;
     transform: scale(1.05);
 }
 
+aside button i {
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+aside button span {
+    flex: 1;
+}
 /* Fade-in animation for buttons */
 @keyframes fadeInButton {
     from {

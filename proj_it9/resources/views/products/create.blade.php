@@ -39,16 +39,10 @@
                     <option value="{{ $category->id }}">{{ $category->category_name }}</option>
                     @endforeach
                 </select>
+                <button type="button" id="add-category" class="btn btn-success ms-2">Add Category</button>
+
             </div>
-            <div class="mb-3">
-                <label>Supplier</label>
-                <select name="supplier_id" class="form-control">
-                    <option value="">Select Supplier</option>
-                    @foreach($suppliers as $supplier)
-                    <option value="{{ $supplier->id }}">{{ $supplier->supplier_name }}</option>
-                    @endforeach
-                </select>
-            </div>
+
             <div class="mb-3">
                 <label>Image</label>
                 <input name="image" type="file" class="form-control">

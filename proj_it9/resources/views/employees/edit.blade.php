@@ -2,6 +2,7 @@
 @extends('layouts.app')
 
 @section('content')
+
 <div class="container">
     <h1 class="text-2xl font-bold mb-4">Edit Employee</h1>
     <form action="{{ route('employees.update', $employee->id) }}" method="POST">

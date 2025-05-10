@@ -13,7 +13,6 @@
                     <th class="py-3 px-6 text-left">Brand</th>
 
                     <th class="py-3 px-6 text-left">Category</th>
-                    <th class="py-3 px-6 text-left">Supplier</th> <!-- Add Supplier -->
 
                     <th class="py-3 px-6 text-left">Barcode</th>
 
@@ -28,7 +27,6 @@
                     <td class="py-3 px-6">{{ $product->brand }}</td>
 
                     <td class="py-3 px-6">{{ $product->category->category_name }}</td>
-                    <td class="py-3 px-6">{{ $product->supplier->supplier_name ?? 'N/A' }}</td> <!-- Display Supplier -->
                     <td class="py-3 px-6">
                         <img src="{{ asset('storage/barcodes/' . $product->barcode . '.png') }}" alt="Barcode" class="w-32 h-8">
                     </td>

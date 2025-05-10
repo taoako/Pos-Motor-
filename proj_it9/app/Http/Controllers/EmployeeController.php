@@ -18,10 +18,15 @@ class EmployeeController extends Controller
     // List all employees
     public function index()
     {
-        $employees = Employee::with('user')->get(); // Assuming Employee has a relationship with User
+        $employees = Employee::with('user')->paginate(10); // Paginate employees with 10 per page
         return view('employees.index', compact('employees'));
     }
 
+    public function content()
+    {
+        $employees = Employee::with('user')->paginate(10); // Paginate employees with 10 per page
+        return view('partials.employees-content', compact('employees'));
+    }
     // Show the edit form for an employee
     public function edit($id)
     {
@@ -58,7 +63,7 @@ class EmployeeController extends Controller
             'password' => $request->password ? bcrypt($request->password) : $user->password,
         ]);
 
-        return redirect()->route('employees.index')->with('success', 'Employee updated successfully!');
+        return redirect()->route('dashbaord')->with('success', 'Employee updated successfully!');
     }
 
     // Delete an employee and their associated user
@@ -75,6 +80,6 @@ class EmployeeController extends Controller
         // Delete the employee
         $employee->delete();
 
-        return redirect()->route('employees.index')->with('success', 'Employee deleted successfully!');
+        return redirect()->route('dashboard')->with('success', 'Employee deleted successfully!');
     }
 }

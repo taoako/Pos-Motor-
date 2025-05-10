@@ -34,8 +34,11 @@ Route::post('/register', [RegisterController::class, 'store'])->name('register.s
 Route::middleware('auth')->group(function () {
     // Dashboard
     Route::get('/dashboard', function () {
+
         return view('dashboard');
     })->name('dashboard');
+
+
 
     // Dynamic Content (AJAX)
     Route::get('/dashboard/content', function () {
@@ -54,6 +57,7 @@ Route::middleware('auth')->group(function () {
     });
 
 
+
     // =========================
     // Sales Routes
     // =========================
@@ -64,14 +68,16 @@ Route::middleware('auth')->group(function () {
         })->name('sales.content');
     });
 
+    Route::get('/sales', function () {
+        return view('partials.sales-content'); // Ensure this view exists
+    })->name('sales.content');
+
     // =========================
     // Inventory Routes
     // =========================
-    Route::prefix('inventory')->group(function () {
-        Route::get('/', [InventoryController::class, 'index'])->name('inventory');
-        Route::get('/content', function () {
-            return view('partials.inventory-content');
-        })->name('inventory.content');
+    Route::prefix('inventory')->name('inventory.')->group(function () {
+        Route::get('/', [InventoryController::class, 'index'])->name('index'); // Main inventory page
+        Route::get('/content', [InventoryController::class, 'content'])->name('content'); // Partial content
     });
 
     // =========================
@@ -86,6 +92,13 @@ Route::middleware('auth')->group(function () {
     Route::put('/suppliers/{supplier}', [SupplierController::class, 'update'])->name('suppliers.update');
     Route::delete('/suppliers/{supplier}', [SupplierController::class, 'destroy'])->name('suppliers.destroy');
 
+
+    Route::get('/test-pagination', function () {
+        $products = \App\Models\Product::latest()->paginate(10);
+        return view('partials.inventory-content', compact('products'));
+    });
+
+
     // =========================
     // Product Routes
     // =========================
@@ -99,6 +112,10 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
     });
 
+    Route::get('/products', function () {
+        return view('partials.products-content'); // Ensure this view exists
+    })->name('products.content');
+
     // =========================
     // Category Routes
     // =========================
@@ -108,13 +125,13 @@ Route::middleware('auth')->group(function () {
     // Employee Routes
     // =========================
     Route::prefix('employees')->group(function () {
+        Route::get('/content', [EmployeeController::class, 'content'])->name('employees.content'); // New route for partial content
         Route::get('/', [EmployeeController::class, 'index'])->name('employees.index');
         Route::get('/{id}/edit', [EmployeeController::class, 'edit'])->name('employees.edit');
         Route::put('/{id}', [EmployeeController::class, 'update'])->name('employees.update');
         Route::delete('/{id}', [EmployeeController::class, 'destroy'])->name('employees.destroy');
         Route::post('/store', [EmployeeController::class, 'store'])->name('employee.store');
     });
-
     // =========================
     // User Routes
     // =========================

@@ -63,7 +63,7 @@
                     <i class="fas fa-box"></i>
                     <span>Products</span>
                 </button>
-                <button data-url="{{ route('employees.index') }}" class="nav-link flex items-center space-x-3 bg-gray-700 rounded-full py-2 px-5 w-full text-center hover:bg-gray-600 transition-colors">
+                <button data-url="{{ route('employees.content') }}" class="nav-link flex items-center space-x-3 bg-gray-700 rounded-full py-2 px-5 w-full text-center hover:bg-gray-600 transition-colors">
                     <i class="fas fa-users"></i>
                     <span>Manage Employees</span>
                 </button>
@@ -128,7 +128,6 @@
     <!-- Bootstrap JS & dynamic loading script -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Add this inside your <script> tag in dashboard.blade.php
         document.addEventListener('DOMContentLoaded', () => {
             // Sidebar toggle
             document.getElementById('sidebarToggle').addEventListener('click', () => {
@@ -181,7 +180,7 @@
                     } catch (err) {
                         console.error(err);
                         document.getElementById('main-content').innerHTML =
-                            `<div class="text-red-500">Failed to load content.</div>`;
+                            `<div class="text-red-500">Failed to load content. Please check your routes or server configuration.</div>`;
                     }
                 });
             });

@@ -27,6 +27,10 @@
                 <input name="product_name" class="form-control" required value="{{ old('product_name', $product->product_name) }}">
             </div>
             <div class="mb-3">
+                <label>Brand</label>
+                <input name="brand" class="form-control" required value="{{ old('brand', $product->brand) }}">
+            </div>
+            <div class="mb-3">
                 <label>Category</label>
                 <select name="category_id" class="form-control" required>
                     <option value="">Select Category</option>
@@ -37,21 +41,7 @@
                     @endforeach
                 </select>
             </div>
-            <div class="mb-3">
-                <label>Supplier</label>
-                <select name="supplier_id" class="form-control">
-                    <option value="">Select Supplier</option>
-                    @foreach($suppliers as $supplier)
-                    <option value="{{ $supplier->id }}" {{ $product->supplier_id == $supplier->id ? 'selected' : '' }}>
-                        {{ $supplier->supplier_name }}
-                    </option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="mb-3">
-                <label>Barcode</label>
-                <input name="barcode" class="form-control" required value="{{ old('barcode', $product->barcode) }}">
-            </div>
+
             <div class="mb-3">
                 <label>Image</label>
                 <input name="image" type="file" class="form-control">

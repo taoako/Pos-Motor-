@@ -9,6 +9,9 @@ class Transaction_Log extends Model
 {
     use HasFactory;
 
+
+    protected $table = 'transaction_logs';
+
     protected $fillable = [
         'product_id',
         'transaction_id',
@@ -17,6 +20,8 @@ class Transaction_Log extends Model
         'quantity',
         'logged_at',
     ];
+
+    protected $dates = ['logged_at'];
 
     public function product()
     {

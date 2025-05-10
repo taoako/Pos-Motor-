@@ -81,11 +81,9 @@ class ProductController extends Controller
         $validated = $request->validate([
             'product_name' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
-            'supplier_id' => 'nullable|exists:suppliers,id',
-            'sku' => 'nullable|string|max:255',
-            'barcode' => 'required|numeric|digits:12',
-            'unit' => 'nullable|string|max:50',
-            'cost_price' => 'required|numeric|min:0',
+            'brand' => 'required|string|max:255',
+
+
 
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
@@ -99,7 +97,7 @@ class ProductController extends Controller
 
         $product->update($validated);
 
-        return redirect()->route('products.index')->with('success', 'Product updated successfully.');
+        return redirect()->route('dashboard')->with('success', 'Product updated successfully.');
     }
 
     public function destroy(Product $product)
