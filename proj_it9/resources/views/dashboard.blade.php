@@ -76,7 +76,7 @@
                     <i class="fas fa-box"></i>
                     <span>Products</span>
                 </button>
-                @if (Auth::user()->employee->posistion === 'Admin')
+                @if (Auth::user()->employee->position === 'Admin')
                 <button data-url="{{ route('employees.content') }}"
                     class="nav-link flex items-center space-x-3 bg-gray-700 rounded-full py-2 px-5 w-full text-center hover:bg-gray-600 transition-colors">
                     <i class="fas fa-users"></i>
@@ -84,7 +84,7 @@
                 </button>
                 @endif
 
-                @if (Auth::user()->employee->posistion === 'Admin')
+                @if (Auth::user()->employee->position === 'Admin')
                 <button onclick="window.open(`{{ url('/pos') }}`, '_blank')"
                     class="nav-link flex items-center space-x-3 bg-gray-700 rounded-full py-2 px-5 w-full text-center hover:bg-gray-600 transition-colors">
                     <i class="fas fa-cash-register"></i>
@@ -137,7 +137,7 @@
                             </button>
                         </form>
 
-                        @if (Auth::user()->employee->posistion === 'Admin')
+                        @if (Auth::user()->employee->position === 'Admin')
 
                         <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700"
                             data-bs-toggle="modal" data-bs-target="#registerModal">
@@ -156,6 +156,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Load content dynamically via fetch
             const loadContent = async (url) => {
                 const target = document.getElementById('main-content');
                 try {
@@ -168,7 +169,7 @@
                     const text = await res.text();
                     target.innerHTML = text;
 
-                    // Reinitialize pagination links after content is loaded
+                    // Reinitialize pagination links and sidebar buttons after content is loaded
                     initializePagination();
                     initializeSidebarButtons();
                 } catch (err) {
@@ -177,27 +178,13 @@
                 }
             };
 
+            // Initialize pagination links
             const initializePagination = () => {
                 const paginationLinks = document.querySelectorAll('#pagination-links a');
-                if (paginationLinks.length > 0) {
-                    paginationLinks.forEach(link => {
-                        link.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            const url = link.getAttribute('href');
-                            if (url) {
-                                loadContent(url);
-                            }
-                        });
-                    });
-                }
-            };
-
-            const initializeSidebarButtons = () => {
-                const sidebarButtons = document.querySelectorAll('button[data-url]');
-                sidebarButtons.forEach(btn => {
-                    btn.addEventListener('click', (e) => {
+                paginationLinks.forEach(link => {
+                    link.addEventListener('click', (e) => {
                         e.preventDefault();
-                        const url = btn.dataset.url;
+                        const url = link.getAttribute('href');
                         if (url) {
                             loadContent(url);
                         }
@@ -205,9 +192,19 @@
                 });
             };
 
-            // Initialize sidebar buttons and pagination links on page load
-            initializeSidebarButtons();
-            initializePagination();
+            // Initialize sidebar buttons
+            const initializeSidebarButtons = () => {
+                const sidebarButtons = document.querySelectorAll('button[data-url]');
+                sidebarButtons.forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.preventDefault(); // Prevent default link behavior
+                        const url = btn.dataset.url;
+                        if (url) {
+                            loadContent(url);
+                        }
+                    });
+                });
+            };
 
             // Sidebar toggle functionality
             const sidebarToggle = document.getElementById('sidebarToggle');
@@ -232,6 +229,10 @@
                     }
                 });
             }
+
+            // Initialize pagination links and sidebar buttons on page load
+            initializeSidebarButtons();
+            initializePagination();
         });
     </script>
 
