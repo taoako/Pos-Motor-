@@ -1,5 +1,9 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
+
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\SalesController;
@@ -12,12 +16,12 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\StockInDetailsController;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
+use App\Http\Controllers\PosController;
 
 // =========================
 // Authentication Routes
 // =========================
+Route::redirect('/', '/login');
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -32,6 +36,7 @@ Route::post('/register', [RegisterController::class, 'store'])->name('register.s
 // Protected Routes
 // =========================
 Route::middleware('auth')->group(function () {
+
     // Dashboard
     Route::get('/dashboard', function () {
 
@@ -40,7 +45,8 @@ Route::middleware('auth')->group(function () {
 
 
 
-    // Dynamic Content (AJAX)
+
+
     Route::get('/dashboard/content', function () {
         return view('partials.dashboard-content');
     })->name('dashboard.content');
@@ -48,14 +54,12 @@ Route::middleware('auth')->group(function () {
     // =========================
     // Stock-In Routes
     // =========================
-    // routes/web.php
     Route::prefix('stock-in')->name('stock-in.')->group(function () {
-        Route::get('/content', [StockInDetailsController::class, 'content'])->name('content'); // Full name: stock-in.content
-        Route::get('/details', [StockInDetailsController::class, 'index'])->name('index'); // stock-in.index
-        Route::get('/details/create', [StockInDetailsController::class, 'create'])->name('create'); // stock-in.create
-        Route::post('/details', [StockInDetailsController::class, 'store'])->name('store'); // stock-in.store
+        Route::get('/content', [StockInDetailsController::class, 'content'])->name('content');
+        Route::get('/details', [StockInDetailsController::class, 'index'])->name('index');
+        Route::get('/details/create', [StockInDetailsController::class, 'create'])->name('create');
+        Route::post('/details', [StockInDetailsController::class, 'store'])->name('store');
     });
-
 
 
     // =========================
@@ -143,12 +147,18 @@ Route::middleware('auth')->group(function () {
     Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 
     // =========================
-    // Search Routes
+    // Search Route
     // =========================
     Route::get('/search', function (Request $request) {
         $query = $request->query('query');
         return view('search.results', compact('query'));
     })->name('search');
+
+    // =========================
+    // POS Routes
+    // =========================
+    Route::get('/pos', [PosController::class, 'index'])->name('pos.index');
+    Route::post('/pos/add-to-order', [PosController::class, 'addToOrder'])->name('pos.addToOrder');
 });
 
 // =========================
