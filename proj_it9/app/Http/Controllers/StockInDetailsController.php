@@ -48,62 +48,65 @@ class StockInDetailsController extends Controller
      * Store a newly created stock-in detail in the database.
      */
 
+
+
     public function store(Request $request)
     {
         // Validate the form data
         $validated = $request->validate([
             'supplier_id' => 'required|exists:suppliers,id',
-            'purchase_date' => 'required|date', // Use purchase_date instead of transaction_date
-            'product_id' => 'required|exists:products,id',
-            'quantity' => 'required|integer|min:1',
-            'cost_price' => 'required|numeric|min:0',
+            'purchase_date' => 'required|date',
+            'products.*.product_id' => 'required|exists:products,id',
+            'products.*.quantity' => 'required|integer|min:1',
+            'products.*.cost_price' => 'required|numeric|min:0',
         ]);
 
-        // Define the markup percentage (e.g., 20%)
-        $markupPercentage = 0.20;
-
-        // Compute the selling price
-        $sellingPrice = $validated['cost_price'] * (1 + $markupPercentage);
-
-        // Start a database transaction
         DB::beginTransaction();
 
         try {
             // Create a new StockInTransaction record
             $stockInTransaction = StockInTransaction::create([
                 'supplier_id' => $validated['supplier_id'],
-                'purchase_date' => $validated['purchase_date'], // Use purchase_date
-                'total_amount' => $validated['quantity'] * $validated['cost_price'], // Calculate total amount
-                'status' => 'completed', // Default status
+                'purchase_date' => $validated['purchase_date'],
+                'total_amount' => 0, // Will calculate later
+                'status' => 'completed',
             ]);
 
-            // Create a new Stock_in_details record
-            Stock_in_details::create([
-                'stock_in_transaction_id' => $stockInTransaction->id,
-                'product_id' => $validated['product_id'],
-                'quantity' => $validated['quantity'],
-                'cost_price' => $validated['cost_price'],
-                'total_cost' => $validated['quantity'] * $validated['cost_price'], // Calculate total cost
-            ]);
+            $totalAmount = 0;
+            $markupPercentage = 20; // 20% markup
 
-            // Update the Product table (stock and selling price)
-            $product = Product::findOrFail($validated['product_id']);
-            $product->increment('stock', $validated['quantity']); // Increment stock
-            $product->update(['selling_price' => $sellingPrice]); // Update selling price
+            // Loop through each product and create Stock_in_details records
+            foreach ($validated['products'] as $productData) {
+                $totalCost = $productData['quantity'] * $productData['cost_price'];
+                $totalAmount += $totalCost;
 
-            // Commit the transaction
+                Stock_in_details::create([
+                    'stock_in_transaction_id' => $stockInTransaction->id,
+                    'product_id' => $productData['product_id'],
+                    'quantity' => $productData['quantity'],
+                    'cost_price' => $productData['cost_price'],
+                    'total_cost' => $totalCost,
+                ]);
+
+                // Update the Product table (stock and selling price)
+                $product = Product::findOrFail($productData['product_id']);
+                $product->increment('stock', $productData['quantity']);
+
+                // Calculate the selling price based on the cost price and markup
+                $sellingPrice = $productData['cost_price'] + ($productData['cost_price'] * $markupPercentage / 100);
+                $product->update(['selling_price' => $sellingPrice]);
+            }
+
+            // Update the total amount in the StockInTransaction record
+            $stockInTransaction->update(['total_amount' => $totalAmount]);
+
             DB::commit();
 
             return redirect()->route('dashboard')->with('success', 'Stock-In successfully created!');
         } catch (\Exception $e) {
-            // Rollback the transaction in case of an error
             DB::rollBack();
 
-            return redirect()->back()->withErrors(['error' => 'An error occurred while creating the stock-in: ' . $e->getMessage()]);
+            return redirect()->back()->withErrors(['error' => 'An error occurred: ' . $e->getMessage()]);
         }
     }
-
-    /**
-     * Display a listing of the stock-in details.
-     */
 }

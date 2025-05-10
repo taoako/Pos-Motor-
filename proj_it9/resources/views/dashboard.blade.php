@@ -156,57 +156,69 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Load content dynamically via fetch
+            let currentController = null;
+
             const loadContent = async (url) => {
                 const target = document.getElementById('main-content');
+
+                // Abort previous request if still running
+                if (currentController) currentController.abort();
+                currentController = new AbortController();
+                const signal = currentController.signal;
+
                 try {
                     const res = await fetch(url, {
                         headers: {
                             'X-Requested-With': 'XMLHttpRequest'
-                        }
+                        },
+                        signal: signal
                     });
                     if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-                    const text = await res.text();
-                    target.innerHTML = text;
+                    const html = await res.text();
+                    target.innerHTML = html;
 
-                    // Reinitialize pagination links and sidebar buttons after content is loaded
+                    // Rebind any events inside loaded content
                     initializePagination();
-                    initializeSidebarButtons();
+                    initializeSidebarButtons(); // Safe to call again
                 } catch (err) {
-                    console.error(err);
-                    target.innerHTML = `<div class="text-red-500">Failed to load content.</div>`;
+                    if (err.name !== 'AbortError') {
+                        console.error(err);
+                        target.innerHTML = `<div class="text-red-500">Failed to load content.</div>`;
+                    }
                 }
             };
 
-            // Initialize pagination links
+            const initializeSidebarButtons = () => {
+                const sidebarButtons = document.querySelectorAll('button[data-url]');
+
+                sidebarButtons.forEach(btn => {
+                    // Remove existing listener if exists
+                    btn.removeEventListener('click', btn._handler);
+
+                    // Add a new handler
+                    const handler = (e) => {
+                        e.preventDefault();
+                        const url = btn.dataset.url;
+                        if (url) loadContent(url);
+                    };
+
+                    btn._handler = handler; // Custom property to track
+                    btn.addEventListener('click', handler);
+                });
+            };
+
             const initializePagination = () => {
                 const paginationLinks = document.querySelectorAll('#pagination-links a');
                 paginationLinks.forEach(link => {
-                    link.addEventListener('click', (e) => {
+                    link.addEventListener('click', function(e) {
                         e.preventDefault();
-                        const url = link.getAttribute('href');
-                        if (url) {
-                            loadContent(url);
-                        }
+                        const url = this.getAttribute('href');
+                        if (url) loadContent(url);
                     });
                 });
             };
 
-            // Initialize sidebar buttons
-            const initializeSidebarButtons = () => {
-                const sidebarButtons = document.querySelectorAll('button[data-url]');
-                sidebarButtons.forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        e.preventDefault(); // Prevent default link behavior
-                        const url = btn.dataset.url;
-                        if (url) {
-                            loadContent(url);
-                        }
-                    });
-                });
-            };
-
-            // Sidebar toggle functionality
+            // Sidebar toggle
             const sidebarToggle = document.getElementById('sidebarToggle');
             if (sidebarToggle) {
                 sidebarToggle.addEventListener('click', () => {
@@ -214,7 +226,7 @@
                 });
             }
 
-            // Dropdown menu functionality
+            // Dropdown toggle
             const dropdownButton = document.getElementById('dropdownButton');
             const dropdownMenu = document.getElementById('dropdownMenu');
             if (dropdownButton && dropdownMenu) {
@@ -224,17 +236,20 @@
                 });
 
                 document.addEventListener('click', (e) => {
-                    if (!dropdownMenu.classList.contains('hidden') && !dropdownMenu.contains(e.target) && !dropdownButton.contains(e.target)) {
+                    if (!dropdownMenu.classList.contains('hidden') &&
+                        !dropdownMenu.contains(e.target) &&
+                        !dropdownButton.contains(e.target)) {
                         dropdownMenu.classList.add('hidden');
                     }
                 });
             }
 
-            // Initialize pagination links and sidebar buttons on page load
+            // Initial binding
             initializeSidebarButtons();
             initializePagination();
         });
     </script>
+
 
     @include('auth.register')
     @include('auth.profile')
