@@ -17,6 +17,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\StockInDetailsController;
 use App\Http\Controllers\PosController;
+use App\Http\Controllers\OrderController;
 
 // =========================
 // Authentication Routes
@@ -156,6 +157,7 @@ Route::middleware('auth')->group(function () {
     // =========================
     Route::get('/pos', [PosController::class, 'index'])->name('pos.index');
     Route::post('/pos/add-to-order', [PosController::class, 'addToOrder'])->name('pos.addToOrder');
+    Route::post('/order/store', [OrderController::class, 'store'])->name('order.store');
 });
 
 // =========================

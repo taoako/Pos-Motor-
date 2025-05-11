@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Pos;
+use App\Models\Product;
+use App\Models\Category;
+use App\Models\Customer;
 
 class PosController extends Controller
 {
@@ -12,15 +15,11 @@ class PosController extends Controller
      */
     public function index()
     {
-        $products = Pos::with(['category', 'stockInDetails'])
-            ->select('id', 'product_name', 'brand', 'barcode', 'selling_price', 'category_id')
-            ->get()
-            ->map(function ($product) {
-                $product->stock = $product->stockInDetails->sum('quantity');
-                return $product;
-            });
+        $products = Product::select('id', 'product_name', 'selling_price', 'stock', 'barcode', 'image', 'category_id')->get();
+        $categories = Category::select('id', 'category_name')->get();
+        $customers  = Customer::all();
 
-        return view('pos.pos', compact('products'));
+        return view('pos.pos', compact('products', 'categories', 'customers'));
     }
 
     /**
