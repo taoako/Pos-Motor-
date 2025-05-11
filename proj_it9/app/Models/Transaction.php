@@ -15,6 +15,8 @@ class Transaction extends Model
         'transaction_date',
         'total_amount',
         'payment_method',
+        'amount_received',  // add these two
+        'change',
     ];
 
     public function customer()
@@ -29,7 +31,7 @@ class Transaction extends Model
 
     public function transactionDetails()
     {
-        return $this->hasMany(Transaction_Detail::class);
+        return $this->hasMany(TransactionDetail::class);
     }
 
     public function transactionLogs()

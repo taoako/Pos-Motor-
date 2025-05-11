@@ -3,55 +3,111 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Pos;
 use App\Models\Product;
-use App\Models\Category;
+use App\Models\Transaction;
+use App\Models\TransactionDetail;
+use Illuminate\Support\Facades\DB;
+
 use App\Models\Customer;
 
-class PosController extends Controller
+class POSController extends Controller
 {
-    /**
-     * Display the POS page with products and stock details.
-     */
+
+
     public function index()
     {
-        $products = Product::select('id', 'product_name', 'selling_price', 'stock', 'barcode', 'image', 'category_id')->get();
-        $categories = Category::select('id', 'category_name')->get();
-        $customers  = Customer::all();
+        $products = Product::where('stock', '>', 0)->get();
+        $customers = Customer::all(); // Fetch all customers
+        $cart = session()->get('cart', []);
 
-        return view('pos.pos', compact('products', 'categories', 'customers'));
+
+
+        return view('pos.index', compact('products', 'cart', 'customers'));
     }
 
-    /**
-     * Handle adding a product to the order.
-     */
-    public function addToOrder(Request $request)
+    public function addToCart(Request $request)
     {
-        $validated = $request->validate([
-            'product_id' => 'required|exists:products,id',
-            'quantity' => 'required|integer|min:1',
-        ]);
+        // Find the product by ID and add it to the cart
+        $product = Product::findOrFail($request->product_id);
+        $cart = session()->get('cart', []);
 
-        // Load product with latest stock-in details
-        $product = Pos::with('latestStockIn')->find($validated['product_id']);
-
-        if (!$product || !$product->latestStockIn) {
-            return response()->json(['error' => 'Product or stock information not found'], 404);
+        if (isset($cart[$product->id])) {
+            $cart[$product->id]['quantity'] += $request->quantity;
+        } else {
+            $cart[$product->id] = [
+                "product_id" => $product->id,
+                "product_name" => $product->product_name,
+                "price" => $product->selling_price,
+                "quantity" => $request->quantity
+            ];
         }
 
-        $orderItem = [
-            'product_id' => $product->id,
-            'product_name' => $product->product_name,
-            'cost_price' => $product->latestStockIn->cost_price,
-            'quantity' => $validated['quantity'],
-            'total_price' => $product->latestStockIn->cost_price * $validated['quantity'],
-        ];
+        // Store cart in session
+        session()->put('cart', $cart);
+        return redirect()->route('pos.index')->with('success', 'Added to cart');
+    }
 
-        // Store order item in session
-        $order = session()->get('order', []);
-        $order[] = $orderItem;
-        session()->put('order', $order);
+    public function removeFromCart(Request $request)
+    {
+        // Remove product from the cart in session
+        $cart = session()->get('cart', []);
+        unset($cart[$request->product_id]);
+        session()->put('cart', $cart);
+        return redirect()->route('pos.index')->with('success', 'Removed from cart');
+    }
 
-        return response()->json(['success' => 'Product added to order', 'orderItem' => $orderItem]);
+    public function checkout(Request $request)
+    {
+        // Validate the checkout request
+        $request->validate([
+            'customer_id' => 'required|exists:customers,id',
+            'payment_method' => 'required|string',
+            'amount_received' => 'required|numeric|min:0',
+        ]);
+
+        $cart = session()->get('cart', []);
+        if (empty($cart)) {
+            return redirect()->route('pos.index')->with('error', 'Cart is empty');
+        }
+
+        // Start transaction to handle the sale process
+        DB::transaction(function () use ($request, $cart) {
+            $total = collect($cart)->sum(fn($item) => $item['price'] * $item['quantity']);
+
+            // Create a new transaction
+            $transaction = Transaction::create([
+                'customer_id' => $request->customer_id,
+                'user_id' => auth()->id(),
+                'transaction_date' => now(),
+                'total_amount' => $total,
+                'payment_method' => $request->payment_method,
+                'amount_received' => $request->amount_received,
+                'change' => $request->amount_received - $total,
+            ]);
+
+            // Create transaction details and update product stock
+            foreach ($cart as $item) {
+                $product = Product::findOrFail($item['product_id']); // Ensure the product exists
+
+                TransactionDetail::create([
+                    'transaction_id' => $transaction->id,
+                    'product_id' => $item['product_id'],
+                    'quantity' => $item['quantity'],
+                    'selling_price' => $product->selling_price, // Use the selling_price from the Product model
+                ]);
+
+                // Decrease stock for the product
+                $product->decrement('stock', $item['quantity']);
+            }
+
+            // Store the transaction in the session for displaying in the view
+            session()->put('transaction', $transaction);
+        });
+
+        // Clear the cart after the transaction is done
+        session()->forget('cart');
+
+        // Redirect back to the POS index page with success message
+        return redirect()->route('pos.index')->with('success', 'Transaction completed!');
     }
 }

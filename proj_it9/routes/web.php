@@ -16,8 +16,10 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\StockInDetailsController;
-use App\Http\Controllers\PosController;
-use App\Http\Controllers\OrderController;
+use App\Http\Controllers\POSController;
+use App\Http\Controllers\CustomerController;
+
+
 
 // =========================
 // Authentication Routes
@@ -37,6 +39,7 @@ Route::post('/register', [RegisterController::class, 'store'])->name('register.s
 // Protected Routes
 // =========================
 Route::middleware('auth')->group(function () {
+    // All routes inside this middleware block
 
     // Dashboard
     Route::get('/dashboard', function () {
@@ -155,14 +158,19 @@ Route::middleware('auth')->group(function () {
     // =========================
     // POS Routes
     // =========================
-    Route::get('/pos', [PosController::class, 'index'])->name('pos.index');
-    Route::post('/pos/add-to-order', [PosController::class, 'addToOrder'])->name('pos.addToOrder');
-    Route::post('/order/store', [OrderController::class, 'store'])->name('order.store');
-});
 
-// =========================
-// Fallback 404 Error Page
-// =========================
-Route::fallback(function () {
-    return response()->view('errors.404', [], 404);
-});
+
+    Route::get('/pos', [POSController::class, 'index'])->name('pos.index');
+    Route::post('/pos/add-to-cart', [POSController::class, 'addToCart'])->name('pos.addToCart');
+    Route::post('/pos/remove-from-cart', [POSController::class, 'removeFromCart'])->name('pos.removeFromCart');
+    Route::post('/pos/checkout', [POSController::class, 'checkout'])->name('pos.checkout');
+
+    // Customer routes
+    Route::post('/customers', [CustomerController::class, 'store'])->name('customers.store');
+
+    // =========================
+    // Fallback 404 Error Page
+    Route::fallback(function () {
+        return response()->view('errors.404', [], 404);
+    });
+}); // Close the middleware group);

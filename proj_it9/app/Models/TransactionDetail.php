@@ -5,9 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Transaction_Detail extends Model
+class TransactionDetail extends Model
 {
     use HasFactory;
+    protected $table = 'transaction_details'; // Explicitly define the table name
 
     protected $fillable = [
         'transaction_id',

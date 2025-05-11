@@ -85,7 +85,7 @@
                 @endif
 
                 @if (Auth::user()->employee->position === 'Admin')
-                <button onclick="window.open(`{{ url('/pos') }}`, '_blank')"
+                <button onclick="window.location.href='{{ route('pos.index') }}'"
                     class="nav-link flex items-center space-x-3 bg-gray-700 rounded-full py-2 px-5 w-full text-center hover:bg-gray-600 transition-colors">
                     <i class="fas fa-cash-register"></i>
                     <span>POS</span>
