@@ -7,7 +7,6 @@ use App\Models\Product;
 use App\Models\Transaction;
 use App\Models\TransactionDetail;
 use Illuminate\Support\Facades\DB;
-
 use App\Models\Customer;
 use App\Models\Sale;
 use App\Models\StockOut;
@@ -15,22 +14,17 @@ use App\Models\StockOut;
 
 class POSController extends Controller
 {
-
-
     public function index()
     {
         $products = Product::where('stock', '>', 0)->get();
-        $customers = Customer::all(); // Fetch all customers
+        $customers = Customer::all();
         $cart = session()->get('cart', []);
-
-
 
         return view('pos.index', compact('products', 'cart', 'customers'));
     }
 
     public function addToCart(Request $request)
     {
-        // Find the product by ID and add it to the cart
         $product = Product::findOrFail($request->product_id);
         $cart = session()->get('cart', []);
 
@@ -45,17 +39,16 @@ class POSController extends Controller
             ];
         }
 
-        // Store cart in session
         session()->put('cart', $cart);
         return redirect()->route('pos.index')->with('success', 'Added to cart');
     }
 
     public function removeFromCart(Request $request)
     {
-        // Remove product from the cart in session
         $cart = session()->get('cart', []);
         unset($cart[$request->product_id]);
         session()->put('cart', $cart);
+
         return redirect()->route('pos.index')->with('success', 'Removed from cart');
     }
 
@@ -98,8 +91,11 @@ class POSController extends Controller
                     'selling_price' => $product->selling_price,
                 ]);
 
+
+
                 $sale = Sale::create([
                     'transactiondetail_id' => $transactionDetail->id, // Pass the correct ID
+
                     'product_id' => $item['product_id'],
                     'quantity' => $item['quantity'],
                     'price' => $product->selling_price,
@@ -120,7 +116,13 @@ class POSController extends Controller
                 ]);
             }
 
+
+            // Flash data to session for next request
+            session()->flash('checkout_complete', true);
+            session()->flash('transaction', $transaction);
+
             session()->put('transaction', $transaction);
+
         });
 
         session()->forget('cart');

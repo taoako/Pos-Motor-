@@ -18,8 +18,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\StockInDetailsController;
 use App\Http\Controllers\POSController;
 use App\Http\Controllers\CustomerController;
-
-
+use App\Http\Controllers\ReceiptController;
 
 // =========================
 // Authentication Routes
@@ -172,6 +171,10 @@ Route::middleware('auth')->group(function () {
     // Customer routes
     Route::post('/customers', [CustomerController::class, 'store'])->name('customers.store');
 
+    // =========================
+    // Receipt Route
+    // =========================
+    Route::get('/receipt/download/{id}', [ReceiptController::class, 'download'])->name('receipt.download');
     // =========================
     // Fallback 404 Error Page
     Route::fallback(function () {
