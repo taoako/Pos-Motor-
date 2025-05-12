@@ -9,6 +9,7 @@ use App\Models\StockInTransaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+
 class StockInDetailsController extends Controller
 {
 
@@ -52,7 +53,6 @@ class StockInDetailsController extends Controller
 
     public function store(Request $request)
     {
-        // Validate the form data
         $validated = $request->validate([
             'supplier_id' => 'required|exists:suppliers,id',
             'purchase_date' => 'required|date',
@@ -64,18 +64,16 @@ class StockInDetailsController extends Controller
         DB::beginTransaction();
 
         try {
-            // Create a new StockInTransaction record
             $stockInTransaction = StockInTransaction::create([
                 'supplier_id' => $validated['supplier_id'],
                 'purchase_date' => $validated['purchase_date'],
-                'total_amount' => 0, // Will calculate later
+                'total_amount' => 0,
                 'status' => 'completed',
             ]);
 
             $totalAmount = 0;
-            $markupPercentage = 20; // 20% markup
+            $markupPercentage = 20;
 
-            // Loop through each product and create Stock_in_details records
             foreach ($validated['products'] as $productData) {
                 $totalCost = $productData['quantity'] * $productData['cost_price'];
                 $totalAmount += $totalCost;
@@ -88,16 +86,13 @@ class StockInDetailsController extends Controller
                     'total_cost' => $totalCost,
                 ]);
 
-                // Update the Product table (stock and selling price)
                 $product = Product::findOrFail($productData['product_id']);
                 $product->increment('stock', $productData['quantity']);
 
-                // Calculate the selling price based on the cost price and markup
                 $sellingPrice = $productData['cost_price'] + ($productData['cost_price'] * $markupPercentage / 100);
                 $product->update(['selling_price' => $sellingPrice]);
             }
 
-            // Update the total amount in the StockInTransaction record
             $stockInTransaction->update(['total_amount' => $totalAmount]);
 
             DB::commit();

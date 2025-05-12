@@ -9,6 +9,8 @@ use App\Models\TransactionDetail;
 use Illuminate\Support\Facades\DB;
 use App\Models\Customer;
 use App\Models\Sale;
+use App\Models\StockOut;
+
 
 class POSController extends Controller
 {
@@ -50,6 +52,7 @@ class POSController extends Controller
         return redirect()->route('pos.index')->with('success', 'Removed from cart');
     }
 
+
     public function checkout(Request $request)
     {
         $request->validate([
@@ -88,8 +91,11 @@ class POSController extends Controller
                     'selling_price' => $product->selling_price,
                 ]);
 
-                Sale::create([
-                    'transactiondetail_id' => $transactionDetail->id,
+
+
+                $sale = Sale::create([
+                    'transactiondetail_id' => $transactionDetail->id, // Pass the correct ID
+
                     'product_id' => $item['product_id'],
                     'quantity' => $item['quantity'],
                     'price' => $product->selling_price,
@@ -98,11 +104,25 @@ class POSController extends Controller
                 ]);
 
                 $product->decrement('stock', $item['quantity']);
+
+                // Log the sale transaction in StockOut
+                StockOut::create([
+                    'product_id' => $item['product_id'],
+                    'transaction_type' => 'sale',
+                    'quantity' => $item['quantity'],
+                    'sale_id' => $sale->id, // Link the sale ID to the stock-out record
+
+                    'logged_at' => now(),
+                ]);
             }
+
 
             // Flash data to session for next request
             session()->flash('checkout_complete', true);
             session()->flash('transaction', $transaction);
+
+            session()->put('transaction', $transaction);
+
         });
 
         session()->forget('cart');

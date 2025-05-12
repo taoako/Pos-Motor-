@@ -74,13 +74,22 @@ Route::middleware('auth')->group(function () {
 
 
 
-    // =========================
+
     // Inventory Routes
-    // =========================
     Route::prefix('inventory')->name('inventory.')->group(function () {
         Route::get('/', [InventoryController::class, 'index'])->name('index'); // Main inventory page
         Route::get('/content', [InventoryController::class, 'content'])->name('content'); // Partial content
+        Route::post('/stock-out', [InventoryController::class, 'stockOut'])->name('stockOut'); // Stock-Out route
+        Route::get('/fetch-sales', [InventoryController::class, 'fetchSales'])->name('fetchSales'); // Fetch sales for returned stock-out
+
+
     });
+
+    Route::get('inventory/fetch-products', [InventoryController::class, 'fetchProducts'])
+        ->name('inventory.fetchProducts');
+
+    Route::get('inventory/fetch-sales', [InventoryController::class, 'fetchSales'])
+        ->name('inventory.fetchSales');
 
     // =========================
     // Supplier Routes
