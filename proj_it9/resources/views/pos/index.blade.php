@@ -176,6 +176,11 @@
                         <option value="Card">Card</option>
                     </select>
                 </div>
+                  <div class="mb-3">
+        <label for="transaction_date" class="form-label">Transaction Date</label>
+        <input type="date" name="transaction_date" class="form-control">
+        <small class="text-muted">Leave blank to use the current date.</small>
+    </div>
                 <div class="mb-3">
                     <label for="amount_received" class="form-label">Amount Received</label>
                     <input type="number" name="amount_received" id="amountReceived" class="form-control" required>

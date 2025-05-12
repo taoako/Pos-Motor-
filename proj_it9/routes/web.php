@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\StockController;
-use App\Http\Controllers\SalesController;
+use App\Http\Controllers\SaleController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\EmployeeController;
@@ -70,15 +70,10 @@ Route::middleware('auth')->group(function () {
     // Sales Routes
     // =========================
     Route::prefix('sales')->group(function () {
-        Route::get('/', [SalesController::class, 'index'])->name('sales');
-        Route::get('/content', function () {
-            return view('partials.sales-content');
-        })->name('sales.content');
+        Route::get('/', [SaleController::class, 'index'])->name('sales.index');
     });
 
-    Route::get('/sales', function () {
-        return view('partials.sales-content'); // Ensure this view exists
-    })->name('sales.content');
+
 
     // =========================
     // Inventory Routes

@@ -11,5 +11,13 @@ class Sale extends Model
 
     protected $fillable = ['product_id', 'quantity', 'price', 'total', 'date'];
 
-    // Add any relationships if necessary
+    public function transactionDetail()
+    {
+        return $this->belongsTo(TransactionDetail::class, 'product_id', 'product_id');
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id');
+    }
 }

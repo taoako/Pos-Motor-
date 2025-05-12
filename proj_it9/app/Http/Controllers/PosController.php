@@ -9,6 +9,7 @@ use App\Models\TransactionDetail;
 use Illuminate\Support\Facades\DB;
 
 use App\Models\Customer;
+use App\Models\Sale;
 
 class POSController extends Controller
 {
@@ -58,11 +59,11 @@ class POSController extends Controller
 
     public function checkout(Request $request)
     {
-        // Validate the checkout request
         $request->validate([
             'customer_id' => 'required|exists:customers,id',
             'payment_method' => 'required|string',
             'amount_received' => 'required|numeric|min:0',
+            'transaction_date' => 'nullable|date', // Allow transaction date input
         ]);
 
         $cart = session()->get('cart', []);
@@ -70,15 +71,17 @@ class POSController extends Controller
             return redirect()->route('pos.index')->with('error', 'Cart is empty');
         }
 
-        // Start transaction to handle the sale process
         DB::transaction(function () use ($request, $cart) {
             $total = collect($cart)->sum(fn($item) => $item['price'] * $item['quantity']);
+
+            // Use the provided transaction date or default to the current date
+            $transactionDate = $request->transaction_date ?? now();
 
             // Create a new transaction
             $transaction = Transaction::create([
                 'customer_id' => $request->customer_id,
                 'user_id' => auth()->id(),
-                'transaction_date' => now(),
+                'transaction_date' => $transactionDate,
                 'total_amount' => $total,
                 'payment_method' => $request->payment_method,
                 'amount_received' => $request->amount_received,
@@ -87,13 +90,23 @@ class POSController extends Controller
 
             // Create transaction details and update product stock
             foreach ($cart as $item) {
-                $product = Product::findOrFail($item['product_id']); // Ensure the product exists
+                $product = Product::findOrFail($item['product_id']);
 
-                TransactionDetail::create([
+                $transactionDetail = TransactionDetail::create([
                     'transaction_id' => $transaction->id,
                     'product_id' => $item['product_id'],
                     'quantity' => $item['quantity'],
-                    'selling_price' => $product->selling_price, // Use the selling_price from the Product model
+                    'selling_price' => $product->selling_price,
+                ]);
+
+                // Record the sale
+                Sale::create([
+                    'transactiondetail_id' => $transactionDetail->id,
+                    'product_id' => $item['product_id'],
+                    'quantity' => $item['quantity'],
+                    'price' => $product->selling_price,
+                    'total' => $item['quantity'] * $product->selling_price,
+                    'date' => $transactionDate, // Use the transaction date
                 ]);
 
                 // Decrease stock for the product
@@ -107,7 +120,6 @@ class POSController extends Controller
         // Clear the cart after the transaction is done
         session()->forget('cart');
 
-        // Redirect back to the POS index page with success message
         return redirect()->route('pos.index')->with('success', 'Transaction completed!');
     }
 }

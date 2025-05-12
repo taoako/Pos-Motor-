@@ -54,7 +54,7 @@
                     <span>Stock In</span>
                 </button>
 
-                <button data-url="{{ route('sales.content') }}"
+                <button data-url="{{ route('sales.index') }}"
                     class="nav-link flex items-center space-x-3 bg-gray-700 rounded-full py-2 px-5 w-full text-center hover:bg-gray-600 transition-colors">
                     <i class="fas fa-percent"></i>
                     <span>Sales</span>
@@ -153,40 +153,101 @@
             </div>
         </main>
     </div>
+<!-- load Chart.js once at page load -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  // global chart initializer, to be called after AJAX load
+  window.initializeSalesChart = function() {
+    const selector = document.getElementById('chartType');
+    const canvas   = document.getElementById('salesChart');
+    if (!selector || !canvas) return;
+
+    // parse embedded JSON
+    const daily   = JSON.parse(selector.dataset.daily);
+    const weekly  = JSON.parse(selector.dataset.weekly);
+    const monthly = JSON.parse(selector.dataset.monthly);
+
+    const ctx = canvas.getContext('2d');
+    let chart = window._salesChart;
+
+    function draw(data, key) {
+      if (chart) chart.destroy();
+      chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: data.map(d => d[key]),
+          datasets: [{
+            label: 'Sales (₱)',
+            data: data.map(d => +d.total),
+            tension: 0.3,
+            fill: true,
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            x: { ticks: { color: 'white' } },
+            y: { ticks: { color: 'white', callback: v => '₱' + v.toLocaleString() } }
+          },
+          plugins: {
+            legend:  { labels: { color: 'white' } },
+            tooltip: { mode: 'index', intersect: false }
+          }
+        }
+      });
+      window._salesChart = chart;
+    }
+
+    // initial draw and change handler
+    draw(daily, 'day');
+    selector.onchange = () => {
+      if (selector.value === 'daily')   draw(daily, 'day');
+      if (selector.value === 'weekly')  draw(weekly, 'week');
+      if (selector.value === 'monthly') draw(monthly, 'month');
+    };
+  };
+</script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             let currentController = null;
-
             const loadContent = async (url) => {
-                const target = document.getElementById('main-content');
+    const target = document.getElementById('main-content');
 
-                // Abort previous request if still running
-                if (currentController) currentController.abort();
-                currentController = new AbortController();
-                const signal = currentController.signal;
+    if (currentController) currentController.abort();
+    currentController = new AbortController();
+    const signal = currentController.signal;
 
-                try {
-                    const res = await fetch(url, {
-                        headers: {
-                            'X-Requested-With': 'XMLHttpRequest'
-                        },
-                        signal: signal
-                    });
-                    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-                    const html = await res.text();
-                    target.innerHTML = html;
+    try {
+        const res = await fetch(url, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            signal: signal
+        });
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        const html = await res.text();
+        target.innerHTML = html;
 
-                    // Rebind any events inside loaded content
-                    initializePagination();
-                    initializeSidebarButtons(); // Safe to call again
-                } catch (err) {
-                    if (err.name !== 'AbortError') {
-                        console.error(err);
-                        target.innerHTML = `<div class="text-red-500">Failed to load content.</div>`;
-                    }
-                }
-            };
+        initializePagination();
+        initializeSidebarButtons();
+
+        // ✅ Re-initialize the chart after ensuring the DOM is updated
+        
+            if (typeof initializeSalesChart === 'function') {
+                initializeSalesChart();
+            }
+    } catch (err) {
+        if (err.name !== 'AbortError') {
+            console.error(err);
+                target.innerHTML = `<div class="text-red-500">Error loading content: ${err.message}</div>`;
+
+        }
+    }
+};
+
 
             const initializeSidebarButtons = () => {
                 const sidebarButtons = document.querySelectorAll('button[data-url]');
@@ -249,6 +310,69 @@
             initializePagination();
         });
     </script>
+
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+    const ctx = document.getElementById('salesChart').getContext('2d');
+    let salesChart;
+
+    const fetchData = (period) => {
+        fetch(`/sales-data?period=${period}`)
+            .then(response => response.json())
+            .then(data => {
+                const labels = data.map(item => item.period);
+                const totals = data.map(item => item.total_sales);
+
+                if (salesChart) {
+                    salesChart.destroy();
+                }
+
+                salesChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Total Sales',
+                            data: totals,
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            fill: true,
+                            tension: 0.1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Period'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Sales Amount (₱)'
+                                },
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            });
+    };
+
+    const periodSelect = document.getElementById('period');
+    periodSelect.addEventListener('change', function () {
+        fetchData(this.value);
+    });
+
+    // Initial load
+    fetchData(periodSelect.value);
+});
+</script>
+
+
 
 
     @include('auth.register')
