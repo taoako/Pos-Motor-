@@ -27,6 +27,10 @@
             border-radius: 12px;
             transition: all 0.3s ease-in-out;
             position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .product-card:hover {
@@ -34,8 +38,20 @@
             box-shadow: 0 8px 24px rgba(0, 255, 204, 0.1);
         }
 
-        .product-card h5 {
-            margin-bottom: 8px;
+        .product-card img {
+            max-height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .barcode {
+            background-color: #ffffff;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            display: inline-block;
+            margin-top: 10px;
         }
 
         .cart-card {
@@ -136,14 +152,26 @@
                             @foreach ($products as $product)
                                 <div class="col-md-4">
                                     <div class="product-card text-center">
+                                        <!-- Product Image -->
+                                        <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->product_name }}" class="img-fluid">
+
                                         <h5>{{ $product->product_name }}</h5>
-                                        <p>${{ $product->selling_price }}</p>
+                                        <p>₱{{ number_format($product->selling_price, 2) }}</p>
                                         <p>Stock: {{ $product->stock }}</p>
+
+                                        <!-- Barcode Image -->
+                                        @if (Storage::disk('public')->exists('barcodes/' . $product->barcode . '.png'))
+                                            <div class="barcode">
+                                                <img src="{{ asset('storage/barcodes/' . $product->barcode . '.png') }}" alt="Barcode" class="img-fluid">
+                                            </div>
+                                        @else
+                                            <p class="text-muted">No Barcode Available</p>
+                                        @endif
+
                                         <form action="{{ route('pos.addToCart') }}" method="POST">
                                             @csrf
                                             <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                            <input type="number" name="quantity" min="1" value="1"
-                                                class="form-control mb-2">
+                                            <input type="number" name="quantity" min="1" value="1" class="form-control mb-2">
                                             <button type="submit" class="btn btn-success btn-sm w-100">Add to Cart</button>
                                         </form>
                                     </div>
@@ -153,6 +181,7 @@
                     </div>
                 </div>
             </div>
+
             <!-- Cart -->
             <div class="col-md-4 position-sticky" style="top: 1rem;">
                 <div class="card shadow-lg" style="background-color: #23272f;">
@@ -163,7 +192,7 @@
                             @foreach ($cart as $item)
                                 @php $totalAmount += $item['price'] * $item['quantity']; @endphp
                                 <div class="cart-item">
-                                    <p>{{ $item['product_name'] }} - ${{ $item['price'] }} × {{ $item['quantity'] }}</p>
+                                    <p>{{ $item['product_name'] }} - ₱{{ number_format($item['price'], 2) }} × {{ $item['quantity'] }}</p>
                                     <form action="{{ route('pos.removeFromCart') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="product_id" value="{{ $item['product_id'] }}">
@@ -173,7 +202,7 @@
                             @endforeach
                         </div>
 
-                        <p class="mt-3"><strong>Total:</strong> ${{ number_format($totalAmount, 2) }}</p>
+                        <p class="mt-3"><strong>Total:</strong> ₱{{ number_format($totalAmount, 2) }}</p>
 
                         <form action="{{ route('pos.checkout') }}" method="POST">
                             @csrf
@@ -187,8 +216,7 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#addCustomerModal">
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCustomerModal">
                                         Add
                                     </button>
                                 </div>
@@ -209,11 +237,10 @@
 
                             <div class="mb-3">
                                 <label>Amount Received</label>
-                                <input type="number" name="amount_received" id="amountReceived" class="form-control"
-                                    required>
+                                <input type="number" name="amount_received" id="amountReceived" class="form-control" required>
                             </div>
 
-                            <p><strong>Change:</strong> $<span id="changeAmount">0.00</span></p>
+                            <p><strong>Change:</strong> ₱<span id="changeAmount">0.00</span></p>
 
                             <button type="submit" class="btn btn-success w-100">Checkout</button>
                         </form>
@@ -221,81 +248,45 @@
                 </div>
             </div>
         </div>
-
-        <!-- Add Customer Modal -->
-        <div class="modal fade" id="addCustomerModal" tabindex="-1">
-            <div class="modal-dialog">
+    </div>
+</body>
+    <!-- Receipt Modal -->
+    @if (session('checkout_complete'))
+        @php $transaction = session('transaction'); @endphp
+        <div class="modal fade" id="receiptModal" tabindex="-1" aria-labelledby="receiptModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
-                    <form action="{{ route('customers.store') }}" method="POST">
-                        @csrf
-                        <div class="modal-header">
-                            <h5 class="modal-title">Add Customer</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="receiptModalLabel">Receipt</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="receipt">
+                            <h4>Receipt</h4>
+                            <p><strong>Customer:</strong> {{ $transaction->customer->first_name }}
+                                {{ $transaction->customer->last_name }}
+                            </p>
+                            <ul>
+                                @foreach ($transaction->transactionDetails as $detail)
+                                    <li>{{ $detail->product->product_name }} - ${{ $detail->selling_price }} ×
+                                        {{ $detail->quantity }}
+                                    </li>
+                                @endforeach
+                            </ul>
+                            <p><strong>Total:</strong> ${{ $transaction->total_amount }}</p>
+                            <p><strong>Received:</strong> ${{ $transaction->amount_received }}</p>
+                            <p><strong>Change:</strong> ${{ $transaction->change }}</p>
                         </div>
-                        <div class="modal-body">
-                            <div class="mb-2">
-                                <label>First Name</label>
-                                <input type="text" name="first_name" class="form-control" required>
-                            </div>
-                            <div class="mb-2">
-                                <label>Last Name</label>
-                                <input type="text" name="last_name" class="form-control" required>
-                            </div>
-                            <div class="mb-2">
-                                <label>Email</label>
-                                <input type="email" name="email" class="form-control" required>
-                            </div>
-                            <div class="mb-2">
-                                <label>Phone</label>
-                                <input type="text" name="phone" class="form-control" required>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-success">Save</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <!-- Receipt Modal -->
-        @if (session('checkout_complete'))
-            @php $transaction = session('transaction'); @endphp
-            <div class="modal fade" id="receiptModal" tabindex="-1" aria-labelledby="receiptModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="receiptModalLabel">Receipt</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="receipt">
-                                <h4>Receipt</h4>
-                                <p><strong>Customer:</strong> {{ $transaction->customer->first_name }}
-                                    {{ $transaction->customer->last_name }}
-                                </p>
-                                <ul>
-                                    @foreach ($transaction->transactionDetails as $detail)
-                                        <li>{{ $detail->product->product_name }} - ${{ $detail->selling_price }} ×
-                                            {{ $detail->quantity }}
-                                        </li>
-                                    @endforeach
-                                </ul>
-                                <p><strong>Total:</strong> ${{ $transaction->total_amount }}</p>
-                                <p><strong>Received:</strong> ${{ $transaction->amount_received }}</p>
-                                <p><strong>Change:</strong> ${{ $transaction->change }}</p>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <a href="{{ route('receipt.download', $transaction->id) }}" class="btn btn-primary">Download
-                                PDF</a>
-                            <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ route('receipt.download', $transaction->id) }}" class="btn btn-primary">Download
+                            PDF</a>
+                        <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
-        @endif
-    </div>
+        </div>
+    @endif
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -316,6 +307,7 @@
             changeAmountSpan.textContent = change >= 0 ? change.toFixed(2) : '0.00';
         });
     </script>
+
     <!-- Log Out Button -->
     <form action="{{ route('logout') }}" method="POST" class="position-fixed bottom-0 end-0 m-4">
         @csrf
