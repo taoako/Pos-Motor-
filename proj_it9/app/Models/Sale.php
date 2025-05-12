@@ -9,11 +9,13 @@ class Sale extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['product_id', 'quantity', 'price', 'total', 'date'];
+    protected $fillable = ['transactiondetail_id', 'product_id', 'quantity', 'price', 'total', 'date'];
+
+
 
     public function transactionDetail()
     {
-        return $this->belongsTo(TransactionDetail::class, 'product_id', 'product_id');
+        return $this->belongsTo(TransactionDetail::class, 'transactiondetail_id', 'id');
     }
 
     public function product()
