@@ -1,16 +1,23 @@
+
+
 /* Set the background image for the entire page */
 body {
-    background-image: url('../images/download\ \(1\).jpg'); /* Replace with your desired image path */
-    background-size: cover; /* Ensure the image covers the entire page */
-    background-position: center; /* Center the image */
-    background-attachment: fixed; /* Keep the background fixed during scrolling */
+    background-image: url('https://via.placeholder.com/streampos-background');
+    /* Replace with the provided image URL */
+    background-size: cover;
+    /* Ensure the image covers the entire page */
+    background-position: center;
+    /* Center the image */
+    background-attachment: fixed;
+    /* Keep the background fixed during scrolling */
     height: 100vh;
     margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     font-family: Arial, sans-serif;
-    animation: fadeIn 1.5s ease-in-out; /* Background fade-in animation */
+    animation: fadeIn 1.5s ease-in-out;
+    /* Background fade-in animation */
 }
 
 /* Fade-in animation for the body */
@@ -18,6 +25,7 @@ body {
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
@@ -26,9 +34,8 @@ body {
 /* Style the login container */
 .login-container {
     display: flex;
-    background-image: url('../images/download\ \(1\).jpg'); /* Relative path to the image */
-    background-size: cover; /* Ensure the image covers the container */
-    background-position: center; /* Center the image */
+    background-color: #161b22;
+    /* Match the dashboard card background color */
     padding: 20px;
     border-radius: 12px;
     width: 700px;
@@ -36,7 +43,9 @@ body {
     text-align: center;
     align-items: center;
     justify-content: space-between;
-    animation: slideIn 1s ease-out; /* Slide-in animation for the container */
+    /* Space between the image and form */
+    animation: slideIn 1s ease-out;
+    /* Slide-in animation for the container */
 }
 
 /* Slide-in animation for the login container */
@@ -45,6 +54,7 @@ body {
         transform: translateY(-50px);
         opacity: 0;
     }
+
     to {
         transform: translateY(0);
         opacity: 1;
@@ -55,14 +65,17 @@ body {
 .login-image {
     flex: 1;
     padding-right: 20px;
-    animation: zoomIn 1s ease-in; /* Zoom-in animation for the image */
+    /* Add spacing to the right of the image */
+    display: block;
+    /* Ensure the image is visible */
 }
 
 .login-image img {
     max-width: 100%;
     height: auto;
     border-radius: 8px;
-    animation: fadeInImage 1.5s ease-in-out; /* Fade-in animation for the image */
+    animation: fadeInImage 1.5s ease-in-out;
+    /* Fade-in animation for the image */
 }
 
 /* Fade-in animation for the login image */
@@ -71,6 +84,7 @@ body {
         opacity: 0;
         transform: scale(0.8);
     }
+
     to {
         opacity: 1;
         transform: scale(1);
@@ -81,7 +95,10 @@ body {
 .login-form {
     flex: 1;
     text-align: left;
-    animation: fadeInForm 1.2s ease-in-out; /* Fade-in animation for the form */
+    padding-left: 20px;
+    /* Add spacing to the left of the form */
+    animation: fadeInForm 1.2s ease-in-out;
+    /* Fade-in animation for the form */
 }
 
 /* Fade-in animation for the login form */
@@ -90,6 +107,7 @@ body {
         opacity: 0;
         transform: translateX(50px);
     }
+
     to {
         opacity: 1;
         transform: translateX(0);
@@ -102,7 +120,8 @@ h2 {
     margin-bottom: 10px;
     color: #333;
     font-family: 'Orbitron', sans-serif;
-    animation: fadeInHeading 1.5s ease-in-out; /* Fade-in animation for headings */
+    animation: fadeInHeading 1.5s ease-in-out;
+    /* Fade-in animation for headings */
 }
 
 /* Fade-in animation for headings */
@@ -111,6 +130,7 @@ h2 {
         opacity: 0;
         transform: translateY(-20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -121,7 +141,8 @@ p {
     font-size: 14px;
     color: #555;
     margin-bottom: 20px;
-    animation: fadeInText 1.5s ease-in-out; /* Fade-in animation for text */
+    animation: fadeInText 1.5s ease-in-out;
+    /* Fade-in animation for text */
 }
 
 /* Fade-in animation for text */
@@ -129,6 +150,7 @@ p {
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
@@ -143,7 +165,8 @@ input {
     border-radius: 6px;
     font-size: 14px;
     background-color: #f9f9f9;
-    animation: fadeInInput 1.5s ease-in-out; /* Fade-in animation for inputs */
+    animation: fadeInInput 1.5s ease-in-out;
+    /* Fade-in animation for inputs */
 }
 
 /* Fade-in animation for input fields */
@@ -152,6 +175,7 @@ input {
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -165,7 +189,8 @@ input {
     margin-top: -10px;
     margin-bottom: 10px;
     text-align: left;
-    animation: fadeInError 1.5s ease-in-out; /* Fade-in animation for errors */
+    animation: fadeInError 1.5s ease-in-out;
+    /* Fade-in animation for errors */
 }
 
 /* Fade-in animation for error messages */
@@ -173,6 +198,7 @@ input {
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
@@ -182,14 +208,16 @@ input {
 button {
     width: 100%;
     padding: 12px;
-    background-color: #4CAF50; /* Button color */
+    background-color: #4CAF50;
+    /* Button color */
     color: white;
     border: none;
     border-radius: 6px;
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
-    animation: fadeInButton 1.5s ease-in-out; /* Fade-in animation for the button */
+    animation: fadeInButton 1.5s ease-in-out;
+    /* Fade-in animation for the button */
 }
 
 /* Fade-in animation for the button */
@@ -198,6 +226,7 @@ button {
         opacity: 0;
         transform: scale(0.8);
     }
+
     to {
         opacity: 1;
         transform: scale(1);
@@ -206,7 +235,8 @@ button {
 
 button:hover {
     background-color: #45a049;
-    transform: scale(1.05); /* Slight zoom effect on hover */
+    transform: scale(1.05);
+    /* Slight zoom effect on hover */
 }
 
 /* Style the forgot password link */
@@ -216,7 +246,8 @@ button:hover {
     font-size: 14px;
     color: #007BFF;
     text-decoration: none;
-    animation: fadeInLink 1.5s ease-in-out; /* Fade-in animation for the link */
+    animation: fadeInLink 1.5s ease-in-out;
+    /* Fade-in animation for the link */
 }
 
 /* Fade-in animation for the forgot password link */
@@ -225,6 +256,7 @@ button:hover {
         opacity: 0;
         transform: translateY(10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -239,7 +271,8 @@ button:hover {
 .form-footer {
     margin-top: 20px;
     text-align: center;
-    animation: fadeInFooter 1.5s ease-in-out; /* Fade-in animation for the footer */
+    animation: fadeInFooter 1.5s ease-in-out;
+    /* Fade-in animation for the footer */
 }
 
 /* Fade-in animation for the footer */
@@ -247,6 +280,7 @@ button:hover {
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
@@ -256,7 +290,8 @@ button:hover {
 .extra-link {
     text-align: center;
     margin-top: 15px;
-    animation: fadeInExtraLink 1.5s ease-in-out; /* Fade-in animation for extra links */
+    animation: fadeInExtraLink 1.5s ease-in-out;
+    /* Fade-in animation for extra links */
 }
 
 /* Fade-in animation for extra links */
@@ -264,6 +299,7 @@ button:hover {
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
