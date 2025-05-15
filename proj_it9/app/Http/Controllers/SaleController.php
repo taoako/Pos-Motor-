@@ -80,11 +80,15 @@ class SaleController extends Controller
         // Calculate Average Transaction Value
         $averageTransactionValue = $totalTransactions > 0 ? $totalSales / $totalTransactions : 0;
 
-        // Calculate Gross Profit
+        // Calculate Gross Profit using StockInDetails cost_price
         $cogs = $sales->sum(function ($sale) {
-            return $sale->quantity * ($sale->product->cost_price ?? 0);
+            // Get latest stock-in detail for the product
+            $stockInDetail = $sale->product->stockInDetails->sortByDesc('id')->first();
+            $costPrice = $stockInDetail ? $stockInDetail->cost_price : 0;
+            return $sale->quantity * $costPrice;
         });
         $grossProfit = $totalSales - $cogs;
+
 
         return view('partials.sales-content', compact(
             'topSellingProducts',

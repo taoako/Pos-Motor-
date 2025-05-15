@@ -19,6 +19,7 @@ use App\Http\Controllers\StockInDetailsController;
 use App\Http\Controllers\POSController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ReceiptController;
+use App\Http\Controllers\DashboardController;
 
 // =========================
 // Authentication Routes
@@ -49,11 +50,12 @@ Route::middleware('auth')->group(function () {
 
 
 
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
 
-    Route::get('/dashboard/content', function () {
-        return view('partials.dashboard-content');
-    })->name('dashboard.content');
-
+    // This route will return the dashboard content with all data
+    Route::get('/dashboard/content', [DashboardController::class, 'index'])->name('dashboard.content');
     // =========================
     // Stock-In Routes
     // =========================
