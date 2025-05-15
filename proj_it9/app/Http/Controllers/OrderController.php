@@ -8,6 +8,7 @@ use App\Models\Transaction_Detail;
 use App\Models\Customer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Models\Category;
 
 class OrderController extends Controller
 {
@@ -79,6 +80,19 @@ class OrderController extends Controller
     public function checkout(Request $request)
     {
         // Validate and process the checkout
+        $request->validate([
+            'customer_id' => 'required|exists:customers,id',
+            'transaction_date' => 'required|date',
+            'total_amount' => 'required|numeric|min:0',
+            'payment_method' => 'required|string',
+            'amount_received' => 'required|numeric|min:0',
+            // 'orders' => 'required|array', // Uncomment if you want to validate orders
+        ]);
+
+        if ($request->amount_received < $request->total_amount) {
+            return back()->withErrors(['amount_received' => 'Amount received is insufficient.']);
+        }
+
         $transaction = Transaction::create([
             'customer_id' => $request->customer_id,
             'user_id' => auth()->id(),
@@ -90,14 +104,41 @@ class OrderController extends Controller
         ]);
 
         // Save transaction details (if applicable)
-        foreach ($request->orders as $order) {
-            $transaction->transactionDetails()->create($order);
+        if ($request->has('orders')) {
+            foreach ($request->orders as $order) {
+                $transaction->transactionDetails()->create($order);
+            }
         }
+
+        // Eager load user (and employee if needed for full name), customer, and transactionDetails.product
+        $transaction->load([
+            'customer',
+            'user.employee', // If you use an employee relation for full name
+            'transactionDetails.product'
+        ]);
 
         // Set session data
         session()->flash('checkout_complete', true);
         session()->flash('transaction', $transaction);
 
         return redirect()->route('pos.index');
+    }
+
+    public function index(Request $request)
+    {
+        // Fetch all products and categories
+        $categories = Category::all();
+        $products = \App\Models\Product::all();
+        $customers = \App\Models\Customer::all();
+
+        // Cart logic (if you use session or other method)
+        $cart = session('cart', []);
+
+        return view('pos.index', [
+            'products' => $products,
+            'cart' => $cart,
+            'customers' => $customers,
+            'categories' => $categories,
+        ]);
     }
 }

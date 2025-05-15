@@ -129,4 +129,5 @@ class POSController extends Controller
 
         return redirect()->route('pos.index')->with('success', 'Transaction completed!');
     }
+
 }

@@ -17,6 +17,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\StockInDetailsController;
 use App\Http\Controllers\POSController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ReceiptController;
 use App\Http\Controllers\DashboardController;
@@ -166,7 +167,7 @@ Route::middleware('auth')->group(function () {
     // =========================
 
 
-    Route::get('/pos', [POSController::class, 'index'])->name('pos.index');
+    Route::get('/pos', [OrderController::class, 'index'])->name('pos.index');
     Route::post('/pos/add-to-cart', [POSController::class, 'addToCart'])->name('pos.addToCart');
     Route::post('/pos/remove-from-cart', [POSController::class, 'removeFromCart'])->name('pos.removeFromCart');
     Route::post('/pos/checkout', [POSController::class, 'checkout'])->name('pos.checkout');
