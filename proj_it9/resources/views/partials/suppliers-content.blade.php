@@ -4,7 +4,7 @@
     </h2>
 
     <!-- Add New Supplier Button -->
-    <a href="{{ route('suppliers.create') }}" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl shadow-md mb-4 inline-block transform hover:scale-110 transition-transform duration-300 hover:shadow-lg">
+    <a href="{{ route('suppliers.create') }}" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl shadow-md mb-4 inline-block transform hover:scale-105 transition-transform duration-300 hover:shadow-lg">
         + Add New Supplier
     </a>
 
@@ -31,23 +31,27 @@
                     <td class="py-3 px-6">{{ $supplier->email }}</td>
                     <td class="py-3 px-6">
                         @if($supplier->status)
-                        <span class="badge bg-green-500 text-white px-2 py-1 rounded">Active</span>
+                        <span class="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">Active</span>
                         @else
-                        <span class="badge bg-gray-500 text-white px-2 py-1 rounded">Inactive</span>
+                        <span class="bg-gray-500 text-white px-3 py-1 rounded-full text-sm font-semibold">Inactive</span>
                         @endif
                     </td>
-                    <td class="py-3 px-6">
-                        <a href="{{ route('suppliers.edit', $supplier) }}" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded shadow-md inline-block">Edit</a>
+                    <td class="py-3 px-6 flex gap-2">
+                        <a href="{{ route('suppliers.edit', $supplier) }}" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg shadow-md transform hover:scale-105 transition-transform duration-300">
+                            Edit
+                        </a>
                         <form action="{{ route('suppliers.destroy', $supplier) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
-                            <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded shadow-md inline-block" onclick="return confirm('Are you sure you want to delete this supplier?')">Delete</button>
+                            <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg shadow-md transform hover:scale-105 transition-transform duration-300" onclick="return confirm('Are you sure you want to delete this supplier?')">
+                                Delete
+                            </button>
                         </form>
                     </td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="7" class="text-center py-3 px-6">No suppliers found.</td>
+                    <td colspan="7" class="text-center py-3 px-6 text-gray-400">No suppliers found.</td>
                 </tr>
                 @endforelse
             </tbody>
@@ -57,7 +61,6 @@
     <div id="pagination-links" class="mt-4">
         {{ $suppliers->withPath(route('suppliers.content'))->links('pagination::tailwind') }}
     </div>
-
 </div>
 
 <!-- Tailwind CSS CDN -->

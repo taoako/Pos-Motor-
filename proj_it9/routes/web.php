@@ -70,6 +70,7 @@ Route::middleware('auth')->group(function () {
     // =========================
     Route::prefix('sales')->group(function () {
         Route::get('/', [SaleController::class, 'index'])->name('sales.index');
+        Route::get('/sales/report', [SaleController::class, 'report'])->name('sales.report');
     });
 
 

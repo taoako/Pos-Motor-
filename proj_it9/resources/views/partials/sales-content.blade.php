@@ -3,6 +3,41 @@
         💰 Sales Dashboard
     </h2>
 
+    <!-- Sales Summary Section -->
+    <div class="bg-gray-800 p-4 rounded-2xl shadow-inner mb-8">
+        <h3 class="text-xl font-bold text-white mb-4">💰 Sales Summary</h3>
+        <table class="table-auto w-full text-left text-white">
+            <thead>
+                <tr class="bg-gray-700">
+                    <th class="px-4 py-2">Metric</th>
+                    <th class="px-4 py-2">Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="border px-4 py-2">Total Sales</td>
+                    <td class="border px-4 py-2">₱{{ number_format($totalSales, 2) }}</td>
+                </tr>
+                <tr>
+                    <td class="border px-4 py-2">Total Transactions</td>
+                    <td class="border px-4 py-2">{{ $totalTransactions }}</td>
+                </tr>
+                <tr>
+                    <td class="border px-4 py-2">Total Items Sold</td>
+                    <td class="border px-4 py-2">{{ $totalItemsSold }}</td>
+                </tr>
+                <tr>
+                    <td class="border px-4 py-2">Average Transaction Value</td>
+                    <td class="border px-4 py-2">₱{{ number_format($averageTransactionValue, 2) }}</td>
+                </tr>
+                <tr>
+                    <td class="border px-4 py-2">Gross Profit</td>
+                    <td class="border px-4 py-2">₱{{ number_format($grossProfit, 2) }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
     <!-- Top Section: Selling & Recent Orders Side by Side -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <!-- Top-Selling Products (limit to 4) -->

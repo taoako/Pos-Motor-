@@ -4,14 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Sale;
-use App\Models\Product;
-use App\Models\TransactionDetail;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 
 class SaleController extends Controller
 {
-
     public function getSalesData(Request $request)
     {
         $period = $request->input('period', 'daily'); // default to daily
@@ -69,12 +65,38 @@ class SaleController extends Controller
             ->orderBy('month')
             ->get();
 
+        // Sales Summary Report
+        $sales = Sale::with('product')->get();
+
+        // Calculate Total Sales
+        $totalSales = $sales->sum('total');
+
+        // Calculate Total Transactions
+        $totalTransactions = $sales->unique('transactiondetail_id')->count();
+
+        // Calculate Total Items Sold
+        $totalItemsSold = $sales->sum('quantity');
+
+        // Calculate Average Transaction Value
+        $averageTransactionValue = $totalTransactions > 0 ? $totalSales / $totalTransactions : 0;
+
+        // Calculate Gross Profit
+        $cogs = $sales->sum(function ($sale) {
+            return $sale->quantity * ($sale->product->cost_price ?? 0);
+        });
+        $grossProfit = $totalSales - $cogs;
+
         return view('partials.sales-content', compact(
             'topSellingProducts',
             'recentOrders',
             'dailySales',
             'weeklySales',
-            'monthlySales'
+            'monthlySales',
+            'totalSales',
+            'totalTransactions',
+            'totalItemsSold',
+            'averageTransactionValue',
+            'grossProfit'
         ));
     }
 }
