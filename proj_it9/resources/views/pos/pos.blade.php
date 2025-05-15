@@ -43,7 +43,26 @@
   </style>
 </head>
 
-<body class="min-h-screen p-4 lg:p-6">
+<body class="min-h-screen p-4 lg:p-6 bg-gray-50 text-gray-900 font-sans">
+  <!-- Admin Navbar -->
+  <nav class="bg-white border-b border-gray-200 px-4 py-2 mb-6 flex items-center justify-between">
+    <div class="flex items-center gap-4">
+      <span class="font-bold text-blue-700 text-xl">POS System</span>
+    </div>
+    <div class="flex gap-2">
+      @if (Auth::user()->employee->position === 'Admin')
+        <a href="{{ route('dashboard') }}" class="px-3 py-2 rounded text-blue-700 hover:bg-blue-50 font-semibold">Dashboard</a>
+        <a href="{{ route('inventory.content') }}" class="px-3 py-2 rounded text-blue-700 hover:bg-blue-50 font-semibold">Inventory</a>
+        <a href="{{ route('products.content') }}" class="px-3 py-2 rounded text-blue-700 hover:bg-blue-50 font-semibold">Products</a>
+        <a href="{{ route('suppliers.content') }}" class="px-3 py-2 rounded text-blue-700 hover:bg-blue-50 font-semibold">Suppliers</a>
+        <a href="{{ route('employees.content') }}" class="px-3 py-2 rounded text-blue-700 hover:bg-blue-50 font-semibold">Employees</a>
+      @endif
+      <form action="{{ route('logout') }}" method="POST" class="d-inline">
+        @csrf
+        <button type="submit" class="px-3 py-2 rounded bg-red-600 text-white font-semibold">Log Out</button>
+      </form>
+    </div>
+  </nav>
 
   <div x-data="{ test: 'Hello Alpine!' }">
     <h1 x-text="test" class="text-2xl text-red-500"></h1>
@@ -68,16 +87,16 @@
   <main class="flex flex-col lg:flex-row gap-6">
     <!-- Product List -->
     <section class="lg:w-2/3">
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 max-h-[80vh] overflow-y-auto pr-1">
-        <template x-for="product in filteredProducts" :key="product . id">
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 max-h-[70vh] overflow-y-auto pr-1">
+        <template x-for="product in filteredProducts" :key="product.id">
           <div
-            class="bg-white rounded-xl shadow p-4 flex flex-col items-center text-center hover:shadow-lg transition-all duration-200">
-            <img :src="product . image ? '/storage/' + product . image : 'https://via.placeholder.com/100x100?text=No+Image'" alt="Product"
-              class="h-24 w-24 object-cover rounded-full border border-gray-300 mb-3" />
-            <h3 class="font-medium text-gray-800 text-lg" x-text="product.product_name"></h3>
-            <p class="text-gray-500 text-sm">PHP <span x-text="product.selling_price"></span></p>
+            class="bg-white rounded-xl shadow p-4 flex flex-col items-center text-center hover:shadow-lg transition-all duration-200 border border-gray-200">
+            <img :src="product.image ? '/storage/' + product.image : 'https://via.placeholder.com/100x100?text=No+Image'" alt="Product"
+              class="h-24 w-24 object-cover rounded-full border border-gray-300 mb-3 bg-gray-100" />
+            <h3 class="font-medium text-gray-900 text-lg" x-text="product.product_name"></h3>
+            <p class="text-gray-600 text-sm">PHP <span x-text="product.selling_price"></span></p>
             <button @click="addToOrder(product)"
-              class="mt-3 w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-semibold transition transform hover:scale-105">
+              class="mt-3 w-full py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-semibold transition transform hover:scale-105">
               + Add to Cart
             </button>
           </div>

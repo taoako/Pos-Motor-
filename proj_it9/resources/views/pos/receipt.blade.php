@@ -95,6 +95,26 @@
                 {{ $transaction->customer->last_name }}
             </p>
             <p><strong>Date:</strong> {{ $transaction->transaction_date }}</p>
+            <p><strong>Cashier:</strong>
+                @if($transaction->user)
+                    @php
+                        // Prefer employee full name if available, then user first/last name, then user name
+                        $cashierName = '';
+                        if (isset($transaction->user->employee)) {
+                            $cashierName = trim(($transaction->user->employee->first_name ?? '') . ' ' . ($transaction->user->employee->last_name ?? ''));
+                        }
+                        if (!$cashierName) {
+                            $cashierName = trim(($transaction->user->first_name ?? '') . ' ' . ($transaction->user->last_name ?? ''));
+                        }
+                        if (!$cashierName && isset($transaction->user->name)) {
+                            $cashierName = $transaction->user->name;
+                        }
+                    @endphp
+                    {{ $cashierName ?: 'N/A' }}
+                @else
+                    N/A
+                @endif
+            </p>
             <table>
                 <thead>
                     <tr>
@@ -109,15 +129,15 @@
                         <tr>
                             <td>{{ $detail->product->product_name }}</td>
                             <td>{{ $detail->quantity }}</td>
-                            <td>${{ number_format($detail->selling_price, 2) }}</td>
-                            <td>${{ number_format($detail->quantity * $detail->selling_price, 2) }}</td>
+                            <td>₱{{ number_format($detail->selling_price, 2) }}</td>
+                            <td>₱{{ number_format($detail->quantity * $detail->selling_price, 2) }}</td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
-            <p><strong>Total Amount:</strong> ${{ number_format($transaction->total_amount, 2) }}</p>
-            <p><strong>Amount Received:</strong> ${{ number_format($transaction->amount_received, 2) }}</p>
-            <p><strong>Change:</strong> ${{ number_format($transaction->change, 2) }}</p>
+            <p><strong>Total Amount:</strong> ₱{{ number_format($transaction->total_amount, 2) }}</p>
+            <p><strong>Amount Received:</strong> ₱{{ number_format($transaction->amount_received, 2) }}</p>
+            <p><strong>Change:</strong> ₱{{ number_format($transaction->change, 2) }}</p>
         </div>
         <div class="receipt-footer">
             <p>Thank you for your purchase!</p>
