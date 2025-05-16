@@ -151,19 +151,14 @@
     <div class="flex min-h-screen">
         <!-- Sidebar -->
         <aside id="sidebar"
+        
             class="bg-gray-800 w-64 flex flex-col items-center py-6 space-y-6 transition-all duration-300 transform -translate-x-0">
-            <div class="flex space-x-2">
-                <img class="w-8 h-8 rounded-full"
-                    src="https://storage.googleapis.com/a1aa/image/255218a3-ffde-424c-f1d3-6986b8cf7111.jpg"
-                    alt="Avatar 1" />
-                <img class="w-8 h-8 rounded-full"
-                    src="https://storage.googleapis.com/a1aa/image/978fba74-ad56-4512-6d24-6e636a7605be.jpg"
-                    alt="Avatar 2" />
+            <div   class="flex flex-col items-center space-y-2 mb-4">
+    <img src="{{ asset('images/image.png') }}" alt="Logo" class="w-16 h-16 rounded-full shadow-lg border-2 border-blue-500">
             </div>
-
             <nav class="flex flex-col items-center space-y-4 w-full px-6">
                 <button data-url="{{ route('dashboard.content') }}"
-                    class="nav-link flex items-center space-x-3 bg-gray-700 rounded-full py-2 px-5 w-full text-center hover:bg-gray-600 transition-colors">
+                    class="nav-link flex items-center space-x-3 bg-gray-700 rounded-full py-2 px-5 w-full text-center hover:bg-gray-600 transition-colors active">
                     <i class="fas fa-tachometer-alt"></i>
                     <span>Dashboard</span>
                 </button>

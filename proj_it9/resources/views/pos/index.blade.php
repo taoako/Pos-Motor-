@@ -177,7 +177,10 @@
     <!-- Navbar for admin quick switch -->
     <nav class="navbar navbar-expand-lg navbar-light mb-4">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">POS System</a>
+         <div class="flex items-center gap-4">
+    <img src="{{ asset('images/image.png') }}" alt="Logo" class="w-5 h-5 rounded-full border-2 border-blue-500" style="max-width:24px;max-height:24px;">
+    <span class="font-bold text-blue-700 text-xl">POS System</span>
+</div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -188,18 +191,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('inventory.content') }}">Inventory</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('products.content') }}">Products</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('suppliers.content') }}">Suppliers</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('employees.content') }}">Employees</a>
-                        </li>
+                      
                     @endif
                     <li class="nav-item">
                         <form action="{{ route('logout') }}" method="POST" class="d-inline">

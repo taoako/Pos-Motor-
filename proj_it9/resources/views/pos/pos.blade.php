@@ -46,16 +46,11 @@
 <body class="min-h-screen p-4 lg:p-6 bg-gray-50 text-gray-900 font-sans">
   <!-- Admin Navbar -->
   <nav class="bg-white border-b border-gray-200 px-4 py-2 mb-6 flex items-center justify-between">
-    <div class="flex items-center gap-4">
-      <span class="font-bold text-blue-700 text-xl">POS System</span>
-    </div>
+      
     <div class="flex gap-2">
       @if (Auth::user()->employee->position === 'Admin')
         <a href="{{ route('dashboard') }}" class="px-3 py-2 rounded text-blue-700 hover:bg-blue-50 font-semibold">Dashboard</a>
-        <a href="{{ route('inventory.content') }}" class="px-3 py-2 rounded text-blue-700 hover:bg-blue-50 font-semibold">Inventory</a>
-        <a href="{{ route('products.content') }}" class="px-3 py-2 rounded text-blue-700 hover:bg-blue-50 font-semibold">Products</a>
-        <a href="{{ route('suppliers.content') }}" class="px-3 py-2 rounded text-blue-700 hover:bg-blue-50 font-semibold">Suppliers</a>
-        <a href="{{ route('employees.content') }}" class="px-3 py-2 rounded text-blue-700 hover:bg-blue-50 font-semibold">Employees</a>
+       
       @endif
       <form action="{{ route('logout') }}" method="POST" class="d-inline">
         @csrf

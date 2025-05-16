@@ -1,12 +1,12 @@
 <!-- filepath: c:\laravel\pos motor and vechicle parts\it9_proj\proj_it9\resources\views\partials\dashboard-content.blade.php -->
-<div class="p-6 bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 rounded-2xl shadow-2xl animate__animated animate__fadeIn text-white">
-    <h2 class="text-4xl font-extrabold text-cyan-400 mb-8 flex items-center gap-2">
+<div class="p-6 bg-gradient-to-br from-white via-gray-100 to-white rounded-2xl shadow-2xl animate__animated animate__fadeIn text-gray-900">
+    <h2 class="text-4xl font-extrabold text-blue-700 mb-8 flex items-center gap-2">
         <i class="fas fa-tachometer-alt"></i> <span>Dashboard</span>
     </h2>
 
     <!-- Sales Overview -->
     <div class="mb-8">
-        <h3 class="text-2xl font-bold mb-4 text-cyan-300">Sales Overview</h3>
+        <h3 class="text-2xl font-bold mb-4 text-blue-600">Sales Overview</h3>
         <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
             <x-dashboard-card title="Sales Today" :value="'₱' . number_format($totalSalesToday, 2)" color="cyan"/>
             <x-dashboard-card title="Sales This Week" :value="'₱' . number_format($totalSalesThisWeek, 2)" color="emerald"/>
@@ -23,7 +23,7 @@
 
     <!-- Inventory Overview -->
     <div class="mb-8">
-        <h3 class="text-2xl font-bold mb-4 text-emerald-300">Inventory Overview</h3>
+        <h3 class="text-2xl font-bold mb-4 text-emerald-600">Inventory Overview</h3>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <x-dashboard-card title="Products" :value="$totalProducts" color="blue"/>
             <x-dashboard-card title="Total Stock" :value="$totalStock" color="purple"/>
@@ -31,12 +31,12 @@
         </div>
         @if($lowStockProducts->count())
             <div class="mt-6">
-                <h4 class="text-lg text-red-400 font-bold mb-2">⚠️ Low Stock Products</h4>
+                <h4 class="text-lg text-red-600 font-bold mb-2">⚠️ Low Stock Products</h4>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                     @foreach($lowStockProducts as $product)
-                        <div class="bg-gray-800 rounded-lg p-3 flex items-center justify-between">
-                            <span class="font-semibold">{{ $product->product_name }}</span>
-                            <span class="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+                        <div class="bg-red-100 rounded-lg p-3 flex items-center justify-between">
+                            <span class="font-semibold text-red-800">{{ $product->product_name }}</span>
+                            <span class="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded shadow">
                                 {{ $product->stock }} left
                             </span>
                         </div>
@@ -48,34 +48,34 @@
 
     <!-- Supplier Overview -->
     <div class="mb-8">
-        <h3 class="text-2xl font-bold mb-4 text-pink-300">Supplier Overview</h3>
+        <h3 class="text-2xl font-bold mb-4 text-pink-600">Supplier Overview</h3>
         <div class="mb-2">Total Suppliers: <span class="font-bold">{{ $supplierCount }}</span></div>
         <div>
             <h4 class="font-semibold mb-2">Recent Stock-In Transactions</h4>
             <div class="overflow-x-auto">
-                <table class="min-w-full bg-gray-800 rounded-lg">
+                <table class="min-w-full bg-white rounded-lg shadow">
                     <thead>
-                        <tr class="text-left text-gray-300">
+                        <tr class="text-left text-gray-700 bg-gray-100">
                             <th class="px-4 py-2">Supplier</th>
                             <th class="px-4 py-2">Purchase Date</th>
                             <th class="px-4 py-2">Amount</th>
                         </tr>
                     </thead>
-                   <tbody>
-    @forelse($recentStockIns as $stockIn)
-        <tr class="border-b border-gray-700 hover:bg-gray-700">
-            <td class="px-4 py-2">
-                {{ optional($stockIn->supplier)->supplier_name ?? 'No Supplier' }}
-            </td>
-            <td class="px-4 py-2">{{ \Carbon\Carbon::parse($stockIn->purchase_date)->format('M d, Y') }}</td>
-            <td class="px-4 py-2">₱{{ number_format($stockIn->total_amount, 2) }}</td>
-        </tr>
-    @empty
-        <tr>
-            <td colspan="3" class="px-4 py-2 text-center text-gray-400">No recent stock-in transactions.</td>
-        </tr>
-    @endforelse
-</tbody>
+                    <tbody>
+                        @forelse($recentStockIns as $stockIn)
+                            <tr class="border-b border-gray-200 hover:bg-blue-50">
+                                <td class="px-4 py-2">
+                                    {{ optional($stockIn->supplier)->supplier_name ?? 'No Supplier' }}
+                                </td>
+                                <td class="px-4 py-2">{{ \Carbon\Carbon::parse($stockIn->purchase_date)->format('M d, Y') }}</td>
+                                <td class="px-4 py-2">₱{{ number_format($stockIn->total_amount, 2) }}</td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="3" class="px-4 py-2 text-center text-gray-400">No recent stock-in transactions.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
                 </table>
             </div>
         </div>

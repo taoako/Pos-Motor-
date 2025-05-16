@@ -1,5 +1,5 @@
-<div class="p-6 bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl shadow-xl">
-    <h2 class="text-3xl font-extrabold text-white mb-6">Employees Management</h2>
+<div class="p-6 bg-gradient-to-br from-white via-white-100 to-white rounded-2xl shadow-xl">
+    <h2 class="text-3xl font-extrabold text-gray-800 mb-6">Employees Management</h2>
 
 
 

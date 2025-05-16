@@ -2,92 +2,56 @@
 body {
     margin: 0;
     font-family: 'Arial', sans-serif;
-    background-color: #121212; /* Deep black background */
-    color: #ffffff; /* White text */
+    background-color: #f5f7fa; /* Light background */
+    color: #222; /* Dark text */
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    animation: fadeIn 1.5s ease-in-out; /* Fade-in animation for the body */
-}
-
-/* Fade-in animation */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+    animation: fadeIn 1.5s ease-in-out;
 }
 
 /* Sidebar styling */
 aside {
-    background-color: #1f1f1f; /* Dark gray for sidebar */
-    color: #ffffff; /* White text */
+    background-color: #ffffff; /* White sidebar */
+    color: #222;
     width: 250px;
     min-height: 100vh;
     padding: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    animation: slideInLeft 1s ease-in-out; /* Slide-in animation for the sidebar */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Shadow for sidebar */
-}
-
-/* Slide-in animation for the sidebar */
-@keyframes slideInLeft {
-    from {
-        transform: translateX(-100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
+    animation: slideInLeft 1s ease-in-out;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.06);
 }
 
 /* Sidebar buttons */
 aside button {
-    background-color: #e63946; /* Vibrant red for buttons */
-    color: #ffffff; /* White text */
+    background-color: #e3e8ef; /* Light gray */
+    color: #222;
     padding: 15px 25px;
     margin: 10px 0;
     border: none;
     border-radius: 8px;
-    width: 100%; /* Full width of container */
-    min-width: 200px; /* Minimum width */
-    max-width: 300px; /* Maximum width */
+    width: 100%;
+    min-width: 200px;
+    max-width: 300px;
     text-align: left;
     font-size: 18px;
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-    animation: fadeInButton 1.2s ease-in-out;
-
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
     display: flex;
     align-items: center;
     gap: 15px;
     min-height: 60px;
     box-sizing: border-box;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.04);
 }
 
-/* Sidebar button hover and animation */
 aside button:hover {
-    background-color: #5a3cef; /* Purple hover effect */
+    background-color: #c7d2fe; /* Soft blue on hover */
     transform: scale(1.05);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
-}
-
-@keyframes fadeInButton {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    box-shadow: 0 6px 12px rgba(30, 64, 175, 0.08);
 }
 
 aside button i {
@@ -99,11 +63,9 @@ aside button span {
     flex: 1;
 }
 
-/* Navigation links */
 .nav-link {
-    transition: transform 0.3s ease, background-color 0.3s ease;
+    transition: transform 0.3s, background-color 0.3s;
 }
-
 .nav-link:hover {
     transform: translateX(5px) scale(1.05);
 }
@@ -111,165 +73,140 @@ aside button span {
 /* Main content styling */
 main {
     flex: 1;
-    background-color: #121212; /* Deep black background */
+    background-color: #f5f7fa;
     padding: 20px;
-    animation: fadeInMain 1.5s ease-in-out; /* Fade-in animation for the main content */
-}
-
-/* Fade-in animation for main content */
-@keyframes fadeInMain {
-    from {
-        opacity: 0;
-        transform: scale(0.9);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
+    animation: fadeInMain 1.5s ease-in-out;
 }
 
 /* Header styling */
 header {
-    background-color: #f9f7f7; /* Light gray for header */
-    color: #ffffff; /* White text */
+    background-color: #ffffff;
+    color: #222;
     padding: 15px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     border-radius: 8px;
     margin-bottom: 20px;
-    animation: slideDown 1s ease-out; /* Slide-down animation for the header */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Shadow for header */
-}
-
-/* Slide-down animation for the header */
-@keyframes slideDown {
-    from {
-        transform: translateY(-50px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
+    animation: slideDown 1s ease-out;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.07);
 }
 
 /* Search bar styling */
 header form {
     display: flex;
     align-items: center;
-    background-color: #e0f7fa; /* Light cyan for search bar */
+    background-color: #f1f5f9;
     border-radius: 8px;
     padding: 5px 10px;
-    animation: fadeInSearch 1.5s ease-in-out; /* Fade-in animation for search bar */
+    animation: fadeInSearch 1.5s ease-in-out;
 }
 
 header form input {
     background: transparent;
     border: none;
     outline: none;
-    color: #ffffff; /* White text */
+    color: #222;
     font-size: 14px;
     margin-right: 10px;
 }
 
 header form button {
-    background-color: #007bff; /* Blue button for search bar */
+    background-color: #2563eb; /* Blue */
     border: none;
     border-radius: 8px;
     padding: 5px 10px;
-    color: #ffffff; /* White text */
+    color: #fff;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s;
 }
 
 header form button:hover {
-    background-color: #0056b3; /* Darker blue hover effect */
-}
-
-/* Fade-in animation for search bar */
-@keyframes fadeInSearch {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    background-color: #1d4ed8;
 }
 
 /* Dropdown menu styling */
 #dropdownMenu {
-    background-color: #1f1f1f; /* Dark gray for dropdown */
-    color: #ffffff; /* White text */
+    background-color: #fff;
+    color: #222;
     border-radius: 8px;
     overflow: hidden;
-    animation: fadeInDropdown 0.5s ease-in-out; /* Fade-in animation for dropdown */
-}
-
-/* Fade-in animation for dropdown */
-@keyframes fadeInDropdown {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    animation: fadeInDropdown 0.5s ease-in-out;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
 /* Dynamic content area */
 #main-content {
-    background-color: #1f1f1f; /* Dark gray background for content */
+    background-color: #fff;
     border-radius: 8px;
     padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Shadow for content */
-    animation: fadeInContent 1.5s ease-in-out; /* Fade-in animation for content */
-}
-
-/* Fade-in animation for content */
-@keyframes fadeInContent {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    box-shadow: 0 4px 8px rgba(0,0,0,0.07);
+    animation: fadeInContent 1.5s ease-in-out;
 }
 
 /* Footer styling */
 footer {
-    background-color: #1f1f1f; /* Dark gray for footer */
-    color: #ffffff; /* White text */
+    background-color: #fff;
+    color: #222;
     text-align: center;
     padding: 10px;
     border-radius: 8px;
     margin-top: 20px;
-    animation: fadeInFooter 1.5s ease-in-out; /* Fade-in animation for the footer */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Shadow for footer */
+    animation: fadeInFooter 1.5s ease-in-out;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.07);
 }
 
-/* Fade-in animation for the footer */
-@keyframes fadeInFooter {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+/* Table styling for light theme */
+table {
+    background-color: #fff;
+    color: #222;
+}
+thead {
+    background-color: #f1f5f9;
+    color: #374151;
+}
+tbody tr {
+    border-bottom: 1px solid #e5e7eb;
+}
+tbody tr:hover {
+    background-color: #f3f4f6;
 }
 
-/* Hover effects for buttons */
+/* Low stock badge */
+.bg-red-500 {
+    background-color: #ef4444 !important;
+}
+.text-white {
+    color: #fff !important;
+}
+
+/* Animations (unchanged) */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideInLeft { from { transform: translateX(-100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@keyframes fadeInMain { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+@keyframes slideDown { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes fadeInSearch { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeInDropdown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeInContent { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeInFooter { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeInButton { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Button hover effect */
 .btn-hover {
     transition: all 0.3s ease-in-out;
 }
-
 .btn-hover:hover {
     transform: scale(1.1);
-    background-color: #007bff; /* Blue hover effect */
-    box-shadow: 0 0 10px rgba(0, 123, 255, 0.6);
+    background-color: #2563eb;
+    box-shadow: 0 0 10px rgba(37, 99, 235, 0.2);
+}
+
+/* Glowing effect for active/clicked sidebar buttons */
+.nav-link.active, .nav-link:active, .nav-link:focus {
+    box-shadow: 0 0 12px 2px #1976d2, 0 0 0 4px #e3eafc;
+    border: 1.5px solid #1976d2 !important;
+    background-color: #e3eafc !important;
+    color: #1976d2 !important;
+    outline: none;
+    transition: box-shadow 0.3s, border 0.3s, background 0.3s;
 }
